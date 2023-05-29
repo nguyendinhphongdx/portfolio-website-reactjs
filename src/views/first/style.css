@@ -1,0 +1,6 @@
+p span {
+    color: var(--color-menu-violet);
+}
+#first .right img {
+    max-width: unset !important;
+}

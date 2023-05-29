@@ -1,0 +1,11 @@
+.menu span {
+    color: var(--color-menu-violet);
+}
+.menu li.active {
+    color: var(--menu-active);
+}
+
+.menu li {
+    color: var(--menu-inactive);
+    cursor: pointer;
+}
