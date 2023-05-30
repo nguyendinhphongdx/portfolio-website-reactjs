@@ -2,7 +2,7 @@ import './style.css';
 
 const First = () => {
     return (
-        <div id="first" className="mt-[128px] flex items-center">
+        <div id="first" className="flex items-center">
             <div className="left">
                 <p className="intro text-white font-bold text-[32px]">
                     Elias is <span>web desginer</span> and <span>front-end developer</span>

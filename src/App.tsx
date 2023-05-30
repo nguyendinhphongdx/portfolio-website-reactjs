@@ -1,29 +1,31 @@
-import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Navbar from './views/navbar/Navbar';
-import First from './views/first/First';
-import Decoration from './components/decoration/Decoration';
-import Quote from './views/quote/Quote';
-import Project from './views/projects/Project';
-import Skill from './views/skills/Skill';
-import AboutMe from './views/about/Aboutme';
-import Contact from './views/contact/Contact';
+import Layout from './components/layout/Layout';
+import HomePage from './pages/home/Home';
+import ProjectsPage from './pages/projects/Projects';
+import AboutPage from './pages/about-me/AboutMe';
+import ContactPage from './pages/contact/Contact';
+
 
 function App() {
+
+
+
   return (
-    <div className='flex justify-center w-[1366px] relative'>
-      <Decoration />
-      <div className="w-[1024px]">
-        <Navbar />
-        <First />
-        <Quote />
-        <Project />
-        <Skill />
-        <AboutMe />
-        <Contact />
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={<Layout />} // Sử dụng Layout component ở đây
+        >
+          <Route index element={<HomePage />} />
+          <Route path="/about-me" element={<AboutPage />} />
+          <Route path="/contacts" element={<ContactPage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

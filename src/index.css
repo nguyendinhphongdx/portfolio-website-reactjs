@@ -25,3 +25,18 @@ body {
   display: flex;
   justify-content: center;
 }
+
+@media only screen and (max-width: 1024px) {
+  #header {
+   
+  }
+  #wrap {
+    width: 100%;
+  }
+  #decoration {
+    display: none;
+  }
+  #about-me>div {
+    flex-wrap: wrap;
+  }
+}

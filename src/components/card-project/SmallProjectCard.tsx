@@ -1,9 +1,12 @@
-const ProjectCard = ({ img, title, content, brief }) => {
+export interface SmallCard {
+    title: string;
+    content: string;
+    brief: string;
+    id: string | number;
+}
+const SmallProjectCard = ({ title, content, brief, id }: SmallCard) => {
     return (
-        <div className="border-[1px] border-[#ABB2BF] w-[330px] pb-[20px]">
-            <div className="img">
-                <img src={img} alt="" />
-            </div>
+        <div key={id} className="border-[1px] border-[#ABB2BF] w-[330px] pb-[20px]">
             <p className="text-[16px] text-[var(--menu-inactive)] px-[10px] py-[8px]">{brief}</p>
             <p className="text-white font-[500] text-[24px] px-[10px] py-[8px] border-y-[1px]">{title}</p>
             <p className="text-[16px] text-[var(--menu-inactive)] px-[10px] py-[8px]">{content}</p>
@@ -20,4 +23,4 @@ const ProjectCard = ({ img, title, content, brief }) => {
         </div>
     );
 }
-export default ProjectCard;
+export default SmallProjectCard;

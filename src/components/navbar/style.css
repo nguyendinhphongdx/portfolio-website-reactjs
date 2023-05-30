@@ -1,6 +1,7 @@
 .menu span {
     color: var(--color-menu-violet);
 }
+
 .menu li.active {
     color: var(--menu-active);
 }
@@ -8,4 +9,9 @@
 .menu li {
     color: var(--menu-inactive);
     cursor: pointer;
+}
+
+#header.active {
+    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, .1);
 }
