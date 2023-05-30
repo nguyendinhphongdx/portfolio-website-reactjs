@@ -10,7 +10,7 @@ const Footer = () => {
                         Elias
                         <span className="ml-5 text-[16px] text-[var(--menu-inactive)]">elias@elias.ml</span>
                     </div>
-                    <p className="text-[16px] text-white mt-5">Web designer and front-end developer based in Ukraine</p>
+                    <p className="text-[16px] text-white mt-5">Web designer and front-end developer PhongND</p>
                 </div>
                 <div className="right">
                     <p className="text-white font-[500] text-[24px]">Media</p>
