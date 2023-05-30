@@ -1,14 +1,14 @@
 const Footer = () => {
     return (
-        <div id="footer" className="border-t-[1px] w-[100%] mt-20  py-[32px]  flex justify-center">
+        <div id="footer" className="border-t-[1px] w-[100%] mt-20  pt-[32px]  flex justify-center">
             <div className="w-[1024px] flex justify-between border-[var(--menu-inactive)] flex-wrap ">
                 <div className="left w-[470px]">
                     <div className="left flex gap-2 items-center font-bold text-white text-[24px]">
                         <div className="img">
                             <img src={require('../../resources/Logo.png')} alt='' width={24} height={24} />
                         </div>
-                        Elias
-                        <span className="ml-5 text-[16px] text-[var(--menu-inactive)]">elias@elias.ml</span>
+                        PhongND
+                        <span className="ml-5 text-[16px] text-[var(--menu-inactive)]">phongnd@boostgo.com</span>
                     </div>
                     <p className="text-[16px] text-white mt-5">Web designer and front-end developer PhongND</p>
                 </div>
@@ -20,8 +20,8 @@ const Footer = () => {
                         <img src={require('../../resources/imgs/Discord.png')} alt='' width={30} height={30} />
                     </div>
                 </div>
-                <div className="text-[var(--menu-inactive)] copyright w-[100%] text-center mt-2">
-                    © Copyright 2022. Made by Elias
+                <div className="text-[var(--menu-inactive)] copyright w-[100%] text-center mt-10">
+                    © Copyright 2022. Made by PhongND
                 </div>
             </div>
 

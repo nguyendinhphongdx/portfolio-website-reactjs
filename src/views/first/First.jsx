@@ -5,7 +5,7 @@ const First = () => {
         <div id="first" className="flex items-center">
             <div className="left">
                 <p className="intro text-white font-bold text-[32px]">
-                    Elias is <span>web desginer</span> and <span>front-end developer</span>
+                    PhongND is <span>web desginer</span> and <span>front-end developer</span>
                 </p>
                 <p className="mt-8 desc text-[16px] text-[#ABB2BF] font-[400] leading-[25px]">
                     He crafts responsive websites where technologies meet creativity

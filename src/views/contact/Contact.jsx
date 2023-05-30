@@ -15,10 +15,10 @@ const Contact = () => {
                             <p className="text-white font-bold">Message me here</p>
                             <ul className="pt-5">
                                 <li className="flex items-center gap-2 text-[var(--menu-inactive)]">
-                                    <img src={require('../../resources/imgs/contact/Discord.png')} alt=""/> !Elias#3519
+                                    <img src={require('../../resources/imgs/contact/Discord.png')} alt=""/> !PhongND#3519
                                 </li>
                                 <li  className="flex items-center gap-2 text-[var(--menu-inactive)]">
-                                    <img src={require('../../resources/imgs/contact/Email.png')} alt=""/> elias@elias.me
+                                    <img src={require('../../resources/imgs/contact/Email.png')} alt=""/> phongnd@phongnd.me
                                 </li>
                             </ul>
                         </div>

@@ -24,10 +24,10 @@ const ContactPage = () => {
                         <p className="text-white font-bold">Message me here</p>
                         <ul className="pt-5">
                             <li className="flex items-center gap-2 text-[var(--menu-inactive)]">
-                                <img src={require('../../resources/imgs/contact/Discord.png')} alt="" /> !Elias#3519
+                                <img src={require('../../resources/imgs/contact/Discord.png')} alt="" /> !PhongND#3519
                             </li>
                             <li className="flex items-center gap-2 text-[var(--menu-inactive)]">
-                                <img src={require('../../resources/imgs/contact/Email.png')} alt="" /> elias@elias.me
+                                <img src={require('../../resources/imgs/contact/Email.png')} alt="" /> phongnd@phongnd.me
                             </li>
                         </ul>
                     </div>
@@ -36,10 +36,10 @@ const ContactPage = () => {
             <TitleContent content="all-media" />
             <div className="flex gap-2">
                 <div className="icon flex justify-center items-center gap-2  text-[#ABB2BF]">
-                    <img src={require('../../resources/imgs/twitter.png')} alt="" /> @elias
+                    <img src={require('../../resources/imgs/twitter.png')} alt="" /> @phongnd
                 </div>
                 <div className="icon flex justify-center items-center gap-2 text-[#ABB2BF]">
-                    <img src={require('../../resources/imgs/twitter.png')} alt="" /> @elias
+                    <img src={require('../../resources/imgs/twitter.png')} alt="" /> @phongnd
                 </div>
             </div>
         </>

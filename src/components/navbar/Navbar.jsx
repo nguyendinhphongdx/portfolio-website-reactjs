@@ -49,7 +49,7 @@ const Navbar = () => {
                     <div className="img">
                         <img src={require('../../resources/Logo.png')} alt='' />
                     </div>
-                    Elias
+                    PhongND
                 </div>
                 <div className="right ">
                     <ul className='menu flex gap-5 text-white'>

@@ -7,7 +7,7 @@ const AboutMe = ({ hideMore, hideTitle }: { hideMore?: boolean, hideTitle?: bool
             {hideTitle ? null : <TitleSection title={'about-me'} width={500} hideMore={true} />}
             <div className="flex gap-2 justify-between">
                 <div className="left w-[515px] mt-5 flex items-center leading-[28px] flex-wrap">
-                    <p className="text-[16px] text-[var(--menu-inactive)]">Hello, i’m Elias!
+                    <p className="text-[16px] text-[var(--menu-inactive)]">Hello, i’m PhongND!
                         I’m a self-taught front-end developer based in Kyiv, Ukraine. I can develop responsive websites from scratch and raise them into modern user-friendly web experiences.
                         <br /> <br />Transforming my creativity and knowledge into a websites has been my passion for over a year. I have been helping various clients to establish their presence online. I always strive to learn about the newest technologies and frameworks.
                     </p>
