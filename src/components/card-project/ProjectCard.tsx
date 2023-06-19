@@ -4,6 +4,8 @@ export interface Card {
     brief: string;
     img: any;
     id: string | number;
+    href?: string;
+    source?: string;
 }
 const ProjectCard = ({ img, title, content, brief, id }: Card) => {
     return (

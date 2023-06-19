@@ -8,7 +8,7 @@ const Project = (props) => {
     return (
         <div id="projects">
             <TitleSection title={'projects'} width={500} />
-            <div className="flex gap-2 justify-evenly">
+            <div className="flex gap-2 justify-evenly flex-wrap">
             {listProjects()}
             </div>
         </div>
