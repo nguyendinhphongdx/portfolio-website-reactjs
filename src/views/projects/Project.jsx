@@ -7,7 +7,7 @@ const Project = (props) => {
     };
     return (
         <div id="projects">
-            <TitleSection title={'projects'} width={500} />
+            <TitleSection title={'projects'} width={500} href="/projects"/>
             <div className="flex gap-2 justify-evenly flex-wrap">
             {listProjects()}
             </div>

@@ -1,5 +1,5 @@
 const TitleSection = (props) => {
-    const { title, hideMore } = props;
+    const { title, hideMore, href } = props;
     return (
         <div id="projects" className="flex items-center justify-between mt-[80px] mb-[40px]">
             <div className="left flex items-center gap-2">
@@ -8,7 +8,7 @@ const TitleSection = (props) => {
             </div>
             {
                 hideMore ? null : <div className="right text-white cursor-pointer">
-                    {'View all ~~>'}
+                    <a href={href ?? '#'}>{'View all ~~>'}</a>
                 </div>
             }
         </div>

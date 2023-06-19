@@ -5,17 +5,17 @@ const Skill = () => {
         left: [
             {
                 title: 'Languages',
-                skills: ['Typescript Lua', 'Python JavaScript'],
+                skills: ['Typescript',' JavaScript', 'Dart Flutter', 'Python Golang'],
             },
         ],
         center: [
             {
                 title: 'Databases',
-                skills: ['SQLite postgreSQL', 'Mongo'],
+                skills: ['SQLite postgreSQL', 'MongoDB', 'MySQL', 'ElasticSearch'],
             },
             {
                 title: 'Other',
-                skills: ['HTML CSS EJS SCSS', 'REST JINJA'],
+                skills: ['HTML CSS EJS SCSS','TailWind', 'REST Docker', 'Git CICD'],
             }
         ],
         right: [
@@ -25,7 +25,7 @@ const Skill = () => {
             },
             {
                 title: 'Frameworks',
-                skills: ['React Vue', 'Disanake', 'Discord.js', 'Flask Express.js'],
+                skills: ['ReactJS Vue', 'Mobile ReactNative', 'NextJS NodeJS', 'Flask Express.js'],
             }
         ]
     };

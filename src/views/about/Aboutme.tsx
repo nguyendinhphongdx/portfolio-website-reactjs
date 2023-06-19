@@ -8,15 +8,17 @@ const AboutMe = ({ hideMore, hideTitle }: { hideMore?: boolean, hideTitle?: bool
             <div className="flex gap-2 justify-between">
                 <div className="left w-[515px] mt-5 flex items-center leading-[28px] flex-wrap">
                     <p className="text-[16px] text-[var(--menu-inactive)]">Hello, i’m PhongND!
-                        I’m a self-taught front-end developer based in Kyiv, Ukraine. I can develop responsive websites from scratch and raise them into modern user-friendly web experiences.
-                        <br /> <br />Transforming my creativity and knowledge into a websites has been my passion for over a year. I have been helping various clients to establish their presence online. I always strive to learn about the newest technologies and frameworks.
+                        Hi, I'm PhongND! I am a self-taught fullstack developer in Hanoi, Vietnam. I can develop responsive websites, mobile apps from user experience to responsive functionality.
+                        <br />
+                        <br />
+                        I have 3 years of experience in programming. I have been helping many clients establish their presence online. I am always trying to learn about the latest technologies and frameworks.
                     </p>
                     {
                         hideMore ? null : <div className="transition duration-300 hover:text-[var(--color-menu-violet)] hover:border-[var(--color-menu-violet)] cursor-pointer border-[1px] p-[6px] text-white inline-block">{'Read more ->'}</div>
                     }
                 </div>
                 <div className="right">
-                    <img className="w-[330px] h-[480px]" src={require('../../resources/imgs/about-me/right.png')} alt="" />
+                    <img className="w-[330px] h-[480px]" src={require('../../resources/imgs/about-me/me.jpg')} alt="" />
                 </div>
             </div>
         </div>
