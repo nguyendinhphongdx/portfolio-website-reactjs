@@ -18,7 +18,7 @@ const Contact = () => {
                                     <img src={require('../../resources/imgs/contact/Discord.png')} alt=""/> !PhongND#3519
                                 </li>
                                 <li  className="flex items-center gap-2 text-[var(--menu-inactive)]">
-                                    <img src={require('../../resources/imgs/contact/Email.png')} alt=""/> phongnd@phongnd.me
+                                    <img src={require('../../resources/imgs/contact/Email.png')} alt=""/> phongnguyendx@gmail.com
                                 </li>
                             </ul>
                         </div>

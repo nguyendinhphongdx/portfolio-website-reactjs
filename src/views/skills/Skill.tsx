@@ -1,34 +1,8 @@
+import { skillDb } from "../../@core/db/skills";
 import TitleSection from "../../components/title-section/TitleSection";
 
 const Skill = () => {
-    const list = {
-        left: [
-            {
-                title: 'Languages',
-                skills: ['Typescript',' JavaScript', 'Dart Flutter', 'Python Golang'],
-            },
-        ],
-        center: [
-            {
-                title: 'Databases',
-                skills: ['SQLite postgreSQL', 'MongoDB', 'MySQL', 'ElasticSearch'],
-            },
-            {
-                title: 'Other',
-                skills: ['HTML CSS EJS SCSS','TailWind', 'REST Docker', 'Git CICD'],
-            }
-        ],
-        right: [
-            {
-                title: 'Tools',
-                skills: ['VSCode Neovim Linux', 'Figma XFCE Arch', 'Git Font Awesome'],
-            },
-            {
-                title: 'Frameworks',
-                skills: ['ReactJS Vue', 'Mobile ReactNative', 'NextJS NodeJS', 'Flask Express.js'],
-            }
-        ]
-    };
+    const list = skillDb;
     return (
         <div id="skills">
             <TitleSection title={'skill'} width={300} />

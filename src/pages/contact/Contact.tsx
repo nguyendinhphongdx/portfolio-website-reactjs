@@ -16,7 +16,7 @@ const ContactPage = () => {
                         <p className="text-white font-bold">Support me here</p>
                         <ul className="pt-5">
                             <li className="flex items-center gap-2 text-[var(--menu-inactive)]">
-                                +84 00123456789
+                                +84 352337342
                             </li>
                         </ul>
                     </div>
@@ -27,7 +27,7 @@ const ContactPage = () => {
                                 <img src={require('../../resources/imgs/contact/Discord.png')} alt="" /> !PhongND#3519
                             </li>
                             <li className="flex items-center gap-2 text-[var(--menu-inactive)]">
-                                <img src={require('../../resources/imgs/contact/Email.png')} alt="" /> phongnd@phongnd.me
+                                <img src={require('../../resources/imgs/contact/Email.png')} alt="" /> phongnguyendx@gmail.com
                             </li>
                         </ul>
                     </div>

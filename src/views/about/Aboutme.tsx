@@ -7,7 +7,7 @@ const AboutMe = ({ hideMore, hideTitle }: { hideMore?: boolean, hideTitle?: bool
             {hideTitle ? null : <TitleSection title={'about-me'} width={500} hideMore={true} />}
             <div className="flex gap-2 justify-between">
                 <div className="left w-[515px] mt-5 flex items-center leading-[28px] flex-wrap">
-                    <p className="text-[16px] text-[var(--menu-inactive)]">Hello, i’m PhongND!
+                    <p className="text-[16px] text-[var(--menu-inactive)]">
                         Hi, I'm PhongND! I am a self-taught fullstack developer in Hanoi, Vietnam. I can develop responsive websites, mobile apps from user experience to responsive functionality.
                         <br />
                         <br />
@@ -18,7 +18,7 @@ const AboutMe = ({ hideMore, hideTitle }: { hideMore?: boolean, hideTitle?: bool
                     }
                 </div>
                 <div className="right">
-                    <img className="w-[330px] h-[480px]" src={require('../../resources/imgs/about-me/me.jpg')} alt="" />
+                    <img className="w-[330px]" src={require('../../resources/imgs/about-me/avt2.png')} alt="" />
                 </div>
             </div>
         </div>

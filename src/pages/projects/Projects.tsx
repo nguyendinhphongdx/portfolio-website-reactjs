@@ -4,48 +4,13 @@ import ProjectsApps from "../../views/projects/ProjectsApps";
 import { Card } from '../../components/card-project/ProjectCard';
 import { SmallCard } from '../../components/card-project/SmallProjectCard';
 import SmallProjects from '../../views/projects/SmallProjects';
+import { projectsDb } from '../../@core/db/projects';
 
 const ProjectsPage = () => {
     const [projects, setProjects] = useState<Card[]>([]);
     const [smallPrs, setSmallPrs] = useState<SmallCard[]>([]);
     useEffect(() => {
-        const list: Card[] = [
-            {
-                title: "ChertNodes",
-                content: "Minecraft servers hosting",
-                brief: "HTML SCSS Python Flask",
-                img: require('../../resources/imgs/projects/cherfnodes.jpg'),
-                id: 1,
-            },
-            {
-                title: "ChertNodes",
-                content: "Minecraft servers hosting",
-                brief: "HTML SCSS Python Flask",
-                img: require('../../resources/imgs/projects/cherfnodes.jpg'),
-                id: 2,
-            },
-            {
-                title: "ChertNodes",
-                content: "Minecraft servers hosting",
-                brief: "HTML SCSS Python Flask",
-                img: require('../../resources/imgs/projects/cherfnodes.jpg'),
-                id: 3,
-            },
-            {
-                title: "ChertNodes",
-                content: "Minecraft servers hosting",
-                brief: "HTML SCSS Python Flask",
-                img: require('../../resources/imgs/projects/cherfnodes.jpg'),
-                id: 4,
-            },
-            {
-                title: "ChertNodes",
-                content: "Minecraft servers hosting",
-                brief: "HTML SCSS Python Flask",
-                img: require('../../resources/imgs/projects/cherfnodes.jpg'),
-                id: 5,
-            }
-        ];
+        const list: Card[] = projectsDb;
         const listSmall: SmallCard[] = [
             {
                 title: "ChertNodes",

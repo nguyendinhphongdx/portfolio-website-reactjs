@@ -8,14 +8,16 @@ const Footer = () => {
                             <img src={require('../../resources/Logo.png')} alt='' width={24} height={24} />
                         </div>
                         PhongND
-                        <span className="ml-5 text-[16px] text-[var(--menu-inactive)]">phongnd@boostgo.com</span>
+                        <span className="ml-5 text-[16px] text-[var(--menu-inactive)]">phongnguyendx@gmail.com</span>
                     </div>
-                    <p className="text-[16px] text-white mt-5">Web designer and front-end developer PhongND</p>
+                    <p className="text-[16px] text-white mt-5">Fullstack developer PhongND</p>
                 </div>
                 <div className="right">
                     <p className="text-white font-[500] text-[24px]">Media</p>
                     <div className="media flex mt-2 gap-3">
-                        <img src={require('../../resources/imgs/Github.png')} alt='' width={30} height={30} />
+                        <a href="https://github.com/nguyendinhphongdx">
+                            <img src={require('../../resources/imgs/Github.png')} alt='' width={30} height={30} />
+                        </a>
                         <img src={require('../../resources/imgs/Figma.png')} alt='' width={30} height={30} />
                         <img src={require('../../resources/imgs/Discord.png')} alt='' width={30} height={30} />
                     </div>
