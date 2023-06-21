@@ -1,11 +1,13 @@
+import { useTranslation } from "react-i18next";
 import { skillDb } from "../../@core/db/skills";
 import TitleSection from "../../components/title-section/TitleSection";
 
 const Skill = () => {
     const list = skillDb;
+    const { t } = useTranslation();
     return (
         <div id="skills">
-            <TitleSection title={'skill'} width={300} />
+            <TitleSection title={t('skills')} width={300} />
             <div className="flex justify-between">
                 <div className="left">
                     <img src={require('../../resources/imgs/skills/left.png')} alt="" />

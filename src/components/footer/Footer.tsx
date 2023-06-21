@@ -15,11 +15,15 @@ const Footer = () => {
                 <div className="right">
                     <p className="text-white font-[500] text-[24px]">Media</p>
                     <div className="media flex mt-2 gap-3">
-                        <a href="https://github.com/nguyendinhphongdx">
-                            <img src={require('../../resources/imgs/Github.png')} alt='' width={30} height={30} />
+                        <a href="https://github.com/nguyendinhphongdx" target='_blank' rel="noreferrer">
+                            <img src={require('../../resources/imgs/Github.png')} alt='' width={28} height={28} />
                         </a>
-                        <img src={require('../../resources/imgs/Figma.png')} alt='' width={30} height={30} />
-                        <img src={require('../../resources/imgs/Discord.png')} alt='' width={30} height={30} />
+                        <a href="https://www.facebook.com/phongmongcong.2606/" target='_blank' rel="noreferrer">
+                            <img src={require('../../resources/imgs/Facebook.png')} alt='' width={32} height={32} />
+                        </a>
+                        <a href='https://www.tiktok.com/@nguyendinhphong2606' target='_blank' rel="noreferrer">
+                            <img src={require('../../resources/imgs/Tiktok.png')} alt='' width={28} height={28} />
+                        </a>
                     </div>
                 </div>
                 <div className="text-[var(--menu-inactive)] copyright w-[100%] text-center mt-10">

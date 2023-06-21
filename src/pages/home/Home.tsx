@@ -10,13 +10,14 @@ import { projectsDb } from '../../@core/db/projects';
 
 const HomePage = () => {
     const [projects, setProjects] = useState<Card[]>([]);
+    
     useEffect(() => {
         const list: Card[] = projectsDb.slice(0,3);
         setProjects(list);
     }, []);
 
     return (
-        <>
+        <>  
             <First />
             <Quote />
             <Project projects={projects} />

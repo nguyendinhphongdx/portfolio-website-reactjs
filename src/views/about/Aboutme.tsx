@@ -1,20 +1,29 @@
+import { Link } from "react-router-dom";
 import TitleSection from "../../components/title-section/TitleSection";
 import './style.css';
+import { useTranslation } from "react-i18next";
 
 const AboutMe = ({ hideMore, hideTitle }: { hideMore?: boolean, hideTitle?: boolean }) => {
+    const { t } = useTranslation();
     return (
         <div id="about-me">
-            {hideTitle ? null : <TitleSection title={'about-me'} width={500} hideMore={true} />}
+            {hideTitle ? null : <TitleSection title={t('about-me')} width={500} hideMore={true} />}
             <div className="flex gap-2 justify-between">
                 <div className="left w-[515px] mt-5 flex items-center leading-[28px] flex-wrap">
                     <p className="text-[16px] text-[var(--menu-inactive)]">
-                        Hi, I'm PhongND! I am a self-taught fullstack developer in Hanoi, Vietnam. I can develop responsive websites, mobile apps from user experience to responsive functionality.
+                        {t('about-me_1')}
                         <br />
                         <br />
-                        I have 3 years of experience in programming. I have been helping many clients establish their presence online. I am always trying to learn about the latest technologies and frameworks.
+                        {t('about-me_2')}
                     </p>
                     {
-                        hideMore ? null : <div className="transition duration-300 hover:text-[var(--color-menu-violet)] hover:border-[var(--color-menu-violet)] cursor-pointer border-[1px] p-[6px] text-white inline-block">{'Read more ->'}</div>
+                        hideMore ? null : (
+                            <Link to={"/about-me"}>
+                                <div className="transition duration-300 hover:text-[var(--color-menu-violet)] hover:border-[var(--color-menu-violet)] cursor-pointer border-[1px] p-[6px] text-white inline-block">
+                                    {t('read_more')+' ->'}
+                                    </div>
+                            </Link>
+                        )
                     }
                 </div>
                 <div className="right">

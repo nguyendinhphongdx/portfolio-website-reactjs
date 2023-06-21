@@ -1,5 +1,9 @@
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+
 const TitleSection = (props) => {
     const { title, hideMore, href } = props;
+    const { t } = useTranslation();
     return (
         <div id="projects" className="flex items-center justify-between mt-[80px] mb-[40px]">
             <div className="left flex items-center gap-2">
@@ -8,7 +12,9 @@ const TitleSection = (props) => {
             </div>
             {
                 hideMore ? null : <div className="right text-white cursor-pointer">
-                    <a href={href ?? '#'}>{'View all ~~>'}</a>
+                    <Link to={href ?? '#'}>
+                        {t('view_all') + ' ~~>'}
+                    </Link>
                 </div>
             }
         </div>

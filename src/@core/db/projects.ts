@@ -22,7 +22,7 @@ const projectsDb = [{
     img: require('../../resources/imgs/projects/dbiz.png'),
     id: 8,
     source: "",
-    href: "https://nguyendinhphongdx.github.io/Website-Rent-Hotel/"
+    href: "https://play.google.com/store/apps/details?id=com.ssg.dbiz_stop"
 },
 {
     title: "Messenger Clone",
