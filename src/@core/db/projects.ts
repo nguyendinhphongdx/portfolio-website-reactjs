@@ -48,7 +48,7 @@ const projectsDb = [{
     brief: "HTML SCSS NextJS ReactJS tailwind JavaScript NodeJS MongoDB TypeScript",
     img: require('../../resources/imgs/projects/tiktok.png'),
     id: 4,
-    href: "https://chipper-creponne-410cfa.netlify.app/",
+    href: "https://tiktok-clone-ebon.vercel.app/",
     source: "https://github.com/nguyendinhphongdx/tiktok-clone"
 },
 {
