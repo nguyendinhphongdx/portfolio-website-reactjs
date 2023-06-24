@@ -1,19 +1,19 @@
 const Footer = () => {
     return (
         <div id="footer" className="border-t-[1px] w-[100%] mt-20  pt-[32px]  flex justify-center">
-            <div className="w-[1024px] flex justify-between border-[var(--menu-inactive)] flex-wrap ">
-                <div className="left w-[470px]">
-                    <div className="left flex gap-2 items-center font-bold text-white text-[24px]">
+            <div className="w-[100%] lg:w-[1024px] flex justify-between border-[var(--menu-inactive)] flex-wrap ">
+                <div className="left0 lg:w-[470px]">
+                    <div className="left flex gap-2 items-center font-bold text-white md:text-[16px] lg:text-[24px]">
                         <div className="img">
                             <img src={require('../../resources/Logo.png')} alt='' width={24} height={24} />
                         </div>
                         PhongND
                         <span className="ml-5 text-[16px] text-[var(--menu-inactive)]">phongnguyendx@gmail.com</span>
                     </div>
-                    <p className="text-[16px] text-white mt-5">Fullstack developer PhongND</p>
+                    <p className="md:text-[12px] lg:text-[16px] text-white mt-5">Fullstack developer PhongND</p>
                 </div>
                 <div className="right">
-                    <p className="text-white font-[500] text-[24px]">Media</p>
+                    <p className="text-white font-[500] md:text-[14px] lg:text-[16px]">Media</p>
                     <div className="media flex mt-2 gap-3">
                         <a href="https://github.com/nguyendinhphongdx" target='_blank' rel="noreferrer">
                             <img src={require('../../resources/imgs/Github.png')} alt='' width={28} height={28} />
@@ -26,7 +26,7 @@ const Footer = () => {
                         </a>
                     </div>
                 </div>
-                <div className="text-[var(--menu-inactive)] copyright w-[100%] text-center mt-10">
+                <div className="text-[var(--menu-inactive)] copyright w-[100%] text-center mt-10 md:text-[14px]]">
                     © Copyright 2022. Made by PhongND
                 </div>
             </div>

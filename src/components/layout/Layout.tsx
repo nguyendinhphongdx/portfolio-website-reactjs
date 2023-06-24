@@ -8,7 +8,7 @@ const Layout = (props: any) => {
         <div id="wrap" className="flex justify-center w-[1366px] relative flex-wrap bg-[url('./resources/background.png')]">
             <Decoration />
             <Navbar />
-            <div className="w-[1024px] mt-[128px]">
+            <div className=" w-[100%] lg:w-[1024px] mt-[128px]">
                 <Outlet />
             </div>
             <Footer />

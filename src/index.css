@@ -28,15 +28,49 @@ body {
 
 @media only screen and (max-width: 1024px) {
   #header {
-   
+    padding-left: 10px;
+    padding-right: 10px;
+
+  }
+  #skills .left {
+    display: none !important;
+  }
+  #first .right img {
+    width: 330px !important;
   }
   #wrap {
     width: 100%;
+    padding: 0px 10px;
   }
+
   #decoration {
     display: none;
   }
+  #quote p {
+    font-size: 16px !important;
+  }
+  p.title {
+    font-size: 22px !important;
+  }
   #about-me>div {
     flex-wrap: wrap;
+  }
+}
+
+@media only screen and (max-width: 880px) {
+ 
+  #first .left .intro {
+    font-size: 1.2rem !important;
+  }
+  #first .left .desc {
+  }
+  .text-white, .text-white span {
+    font-size: 16px !important;
+  }
+  .title.text-white {
+    font-size: 20px !important;
+  }
+  :root{
+    --text-par: 14px;
   }
 }

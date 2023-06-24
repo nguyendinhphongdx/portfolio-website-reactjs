@@ -66,7 +66,7 @@ const Navbar = () => {
                     </div>
                 </Link>
                 <div className="right flex gap-10 text-white">
-                    <ul className='menu flex gap-5 '>
+                    <ul className='menu lg:flex gap-5 hidden'>
                         {navs}
                     </ul>
                     <div className="flex gap-1">

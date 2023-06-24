@@ -9,7 +9,7 @@ export interface Card {
 }
 const ProjectCard = ({ img, title, content, brief, id, href, source }: Card) => {
     return (
-        <div key={id} className="border-[1px] border-[#ABB2BF] w-[330px] pb-[20px] flex flex-wrap">
+        <div key={id} className="border-[1px] border-[#ABB2BF] w-[300px] lg:w-[330px] pb-[20px] flex flex-wrap">
             <div className="img w-[100%]">
                 <img className="w-[100%] h-[200px]" src={img} alt="" />
             </div>
