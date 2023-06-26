@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 :root {
-  --bg-color: #282C33;
+  --bg-color: #1e293b;
   --color-menu-violet: #C778DD;
   --menu-active: #fff;
   --menu-inactive: #ABB2BF;
