@@ -8,7 +8,7 @@ const TitleSection = (props) => {
         <div id="projects" className="flex items-center justify-between mt-[80px] mb-[40px]">
             <div className="left flex items-center gap-2">
                 <p className="title text-white text-[32px]"><span>#</span>{title}</p>
-                <div className={`w-[500px] h-[1px] bg-[#C778DD]`}></div>
+                <div id="separate" className={`md:w-[500px] lg:w-[500px] h-[1px] bg-[#C778DD]`}></div>
             </div>
             {
                 hideMore ? null : <div className="right text-white cursor-pointer">

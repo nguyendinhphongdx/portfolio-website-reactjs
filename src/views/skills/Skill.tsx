@@ -7,12 +7,12 @@ const Skill = () => {
     const { t } = useTranslation();
     return (
         <div id="skills">
-            <TitleSection title={t('skills')} width={300} />
+            <TitleSection title={t('skills')} width={300} href={'about-me'}/>
             <div className="flex justify-between">
                 <div className="left">
                     <img src={require('../../resources/imgs/skills/left.png')} alt="" />
                 </div>
-                <div className="right flex gap-5">
+                <div className="right flex gap-5 flex-wrap">
                     <div className="col-left">
                         {list.left.map((skill, i) => CardSkills({ title: skill.title, skills: skill.skills, id: 'l-' + i }))}
                     </div>

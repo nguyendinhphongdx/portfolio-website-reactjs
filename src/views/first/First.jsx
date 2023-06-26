@@ -24,7 +24,7 @@ const First = () => {
                     <div className='flex border-[1px] items-center pl-2 justify-center'>
                         <input type='color' className='p-[0]' hidden />
                         <div className='w-[18px] h-[18px] bg-[#C778DD]' />
-                        <p className='text-white ml-2 py-2'><span className='text-[#ABB2BF]'>{t('current_working')}</span> BoostGo</p>
+                        <p id='current-work' className='text-white ml-2 py-2'><span className='text-[#ABB2BF]'>{t('current_working')}</span> BoostGo</p>
                     </div>
                 </div>
             </div>

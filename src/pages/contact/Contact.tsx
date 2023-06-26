@@ -7,13 +7,13 @@ const ContactPage = () => {
     return (
         <>
             <BreadScrum path={t('contacts')} desc={t('who_am_i')} />
-            <div className="flex gap-2 justify-between">
+            <div className="flex gap-2 justify-between flex-wrap">
                 <div className="left w-[505px] mt-5 flex items-center leading-[28px] flex-wrap">
                     <p className="text-[16px] text-[var(--menu-inactive)]">
                        {t('contacts_des')}
                     </p>
                 </div>
-                <div className="right flex gap-2">
+                <div className="right flex gap-2 flex-wrap">
                     <div className="box border-[1px] p-5 h-[fit-content]">
                         <p className="text-white font-bold">{t('phone')}</p>
                         <ul className="pt-5">

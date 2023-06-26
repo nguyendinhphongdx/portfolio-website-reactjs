@@ -6,7 +6,7 @@ const SkillHorizontal = ({ skills }: { skills: SkillCardProps[] }) => {
     return (
         <>
             <TitleContent content="skills" />
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap justify-center">
                 {list}
             </div>
         </>

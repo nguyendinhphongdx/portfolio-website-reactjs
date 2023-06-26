@@ -6,7 +6,7 @@ const Contact = () => {
     return (
         <div id="contact">
             <TitleSection title={t('contacts')} width={300} hideMore={true} />
-            <div className="flex gap-2 justify-between">
+            <div className="flex gap-2 sm:justify-between flex-wrap justify-center">
                 <div className="left w-[505px] mt-5 flex items-center leading-[28px] flex-wrap">
                     <p className="md:text-[14px] lg:text-[16px] text-[var(--menu-inactive)]">
                         {t('contacts_des')}

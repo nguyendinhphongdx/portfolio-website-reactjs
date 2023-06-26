@@ -32,12 +32,15 @@ body {
     padding-right: 10px;
 
   }
-  #skills .left {
+
+  #skills .left img {
     display: none !important;
   }
+
   #first .right img {
     width: 330px !important;
   }
+
   #wrap {
     width: 100%;
     padding: 0px 10px;
@@ -46,31 +49,58 @@ body {
   #decoration {
     display: none;
   }
+
   #quote p {
     font-size: 16px !important;
   }
+
   p.title {
     font-size: 22px !important;
   }
+
   #about-me>div {
     flex-wrap: wrap;
   }
 }
 
 @media only screen and (max-width: 880px) {
- 
+
   #first .left .intro {
     font-size: 1.2rem !important;
   }
-  #first .left .desc {
-  }
-  .text-white, .text-white span {
+
+  #first .left .desc {}
+
+  .text-white,
+  .text-white span {
     font-size: 16px !important;
   }
+
   .title.text-white {
     font-size: 20px !important;
   }
-  :root{
+
+  :root {
     --text-par: 14px;
   }
+}
+
+@media only screen and (max-width: 640px) {
+  #wrap-quote {
+    width: 100%;
+  }
+
+  #first .right img {
+    width: 150px !important;
+    border-bottom-left-radius: 70px !important;
+  }
+
+  .title #separate {
+    width: 100% !important;
+  }
+
+  #current-work, #current-work span {
+    font-size: 10px !important;
+  }
+
 }
