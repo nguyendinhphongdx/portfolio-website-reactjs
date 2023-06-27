@@ -7,13 +7,13 @@ const projectsDb = [{
     href: "https://8icle.com/"
 },
 {
-    title: "Website rent Hotel",
-    content: "Hotel reservation system (FrontEnd)",
+    title: "Team WebApp dev",
+    content: "Frelancer team taking outside work",
     brief: "HTMl CSS Javascript Boostrap JQuery",
-    img: require('../../resources/imgs/projects/rent.png'),
+    img: require('../../resources/imgs/projects/webapp.png'),
     id: 7,
-    source: "https://github.com/nguyendinhphongdx/Website-Rent-Hotel",
-    href: "https://nguyendinhphongdx.github.io/Website-Rent-Hotel/"
+    source: "#",
+    href: "https://site-intro.onrender.com/"
 },
 {
     title: "DBiz Stop, DBiz Driver, DBiz Mng",
@@ -23,6 +23,15 @@ const projectsDb = [{
     id: 8,
     source: "",
     href: "https://play.google.com/store/apps/details?id=com.ssg.dbiz_stop"
+},
+{
+    title: "Website rent Hotel",
+    content: "Hotel reservation system (FrontEnd)",
+    brief: "HTMl CSS Javascript Boostrap JQuery",
+    img: require('../../resources/imgs/projects/rent.png'),
+    id: 7,
+    source: "https://github.com/nguyendinhphongdx/Website-Rent-Hotel",
+    href: "https://nguyendinhphongdx.github.io/Website-Rent-Hotel/"
 },
 {
     title: "Messenger Clone",

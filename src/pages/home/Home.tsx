@@ -12,7 +12,7 @@ const HomePage = () => {
     const [projects, setProjects] = useState<Card[]>([]);
     
     useEffect(() => {
-        const list: Card[] = projectsDb.slice(0,3);
+        const list: Card[] = projectsDb.slice(0,6);
         setProjects(list);
     }, []);
 
