@@ -1,6 +1,6 @@
 const projectsDb = [{
     title: "8icle",
-    content: "Information scanning and analysis tool",
+    content: "Công cụ rà quét và phân tích thông minh",
     brief: "HTML SCSS NextJS ReactJS tailwind JavaScript TypeScript",
     img: require('../../resources/imgs/projects/8icle.png'),
     id: 1,
@@ -8,7 +8,7 @@ const projectsDb = [{
 },
 {
     title: "Team WebApp dev",
-    content: "Frelancer team taking outside work",
+    content: "Team freelancer cung cấp dịch vụ xử lý công việc theo yêu cầu",
     brief: "HTMl CSS Javascript Boostrap JQuery",
     img: require('../../resources/imgs/projects/webapp.png'),
     id: 7,
@@ -17,7 +17,7 @@ const projectsDb = [{
 },
 {
     title: "DBiz Stop, DBiz Driver, DBiz Mng",
-    content: "Management application for the chain of petrol stations PVOIL",
+    content: "Ứng dụng quản lý chuỗi cửa hàng xăng dầu PVOIL",
     brief: "Dart Flutter",
     img: require('../../resources/imgs/projects/dbiz.png'),
     id: 8,
@@ -26,7 +26,7 @@ const projectsDb = [{
 },
 {
     title: "Website rent Hotel",
-    content: "Hotel reservation system (FrontEnd)",
+    content: "Hệ thống đặt phòng khách sạn (FrontEnd)",
     brief: "HTMl CSS Javascript Boostrap JQuery",
     img: require('../../resources/imgs/projects/rent.png'),
     id: 7,
@@ -35,7 +35,7 @@ const projectsDb = [{
 },
 {
     title: "Messenger Clone",
-    content: "Application similar to facebook messenger, allowing users to message",
+    content: "Ứng dụng lấy ý tưởng từ Messager của Facebook, với mục dích trao đổi thông tin giữa nhiều người dùng",
     brief: "HTML SCSS NextJS ReactJS tailwind JavaScript TypeScript",
     img: require('../../resources/imgs/projects/messenger.png'),
     id: 2,
@@ -44,7 +44,7 @@ const projectsDb = [{
 },
 {
     title: "Zing MP3",
-    content: "Online music player application",
+    content: "Website nghe nhạc trực tuyến",
     brief: "HTML SCSS NextJS ReactJS tailwind JavaScript",
     img: require('../../resources/imgs/projects/zing.png'),
     id: 3,
@@ -53,7 +53,7 @@ const projectsDb = [{
 },
 {
     title: "Tiktok Clone",
-    content: "The app is a tiktok social network",
+    content: "Website lấy ý tưởng từ Tiktok 1 mạng xã hội cực kì phổ biến",
     brief: "HTML SCSS NextJS ReactJS tailwind JavaScript NodeJS MongoDB TypeScript",
     img: require('../../resources/imgs/projects/tiktok.png'),
     id: 4,
@@ -62,7 +62,7 @@ const projectsDb = [{
 },
 {
     title: "KhoaBang Acedemy",
-    content: "Mobile application to manage students at KhoaBang Acedemy",
+    content: "Hệ thống quản lý sinh viên của trung tâm Khoa Bảng",
     brief: "Android Java NodeJS MYSQL",
     img: require('../../resources/imgs/projects/cherfnodes.jpg'),
     id: 5,
@@ -70,7 +70,7 @@ const projectsDb = [{
 },
 {
     title: "Template app mobile ReactNative",
-    content: "Support building the base for reactnative applications quickly",
+    content: "Template app mobile React Native hỗ trợ việc phát triển mới",
     brief: "Javascript ReactNative",
     img: require('../../resources/imgs/projects/cherfnodes.jpg'),
     id: 6,
