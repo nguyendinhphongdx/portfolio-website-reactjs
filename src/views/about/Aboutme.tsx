@@ -27,7 +27,7 @@ const AboutMe = ({ hideMore, hideTitle }: { hideMore?: boolean, hideTitle?: bool
                     }
                 </div>
                 <div className="right">
-                    <img className="w-[180px] md:w-[260px] lg:w-[330px]" src={require('../../resources/imgs/about-me/avt2.png')} alt="" />
+                    <img className="w-[180px] md:w-[260px] lg:w-[380px]" src={require('../../resources/imgs/about-me/avt2.jpg')} alt="" />
                 </div>
             </div>
         </div>

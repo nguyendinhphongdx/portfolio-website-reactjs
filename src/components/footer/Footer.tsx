@@ -18,7 +18,7 @@ const Footer = () => {
                         <a href="https://github.com/nguyendinhphongdx" target='_blank' rel="noreferrer">
                             <img src={require('../../resources/imgs/Github.png')} alt='' width={28} height={28} />
                         </a>
-                        <a href="https://www.facebook.com/phongmongcong.2606/" target='_blank' rel="noreferrer">
+                        <a href="https://www.facebook.com/phongnd.fullstack/" target='_blank' rel="noreferrer">
                             <img src={require('../../resources/imgs/Facebook.png')} alt='' width={32} height={32} />
                         </a>
                         <a href='https://www.tiktok.com/@nguyendinhphong2606' target='_blank' rel="noreferrer">

@@ -6,7 +6,7 @@ const Decoration = () => {
                 <a  href="https://github.com/nguyendinhphongdx" target='_blank'  rel="noreferrer">
                     <img src={require('../../resources/imgs/Github.png')} alt='' width={28} height={28} />
                 </a>
-                <a target='_blank' href="https://www.facebook.com/phongmongcong.2606/" rel="noreferrer">
+                <a target='_blank' href="https://www.facebook.com/phongnd.fullstack/" rel="noreferrer">
                     <img src={require('../../resources/imgs/Facebook.png')} alt='' width={32} height={32} />
                 </a>
                 <a href='https://www.tiktok.com/@nguyendinhphong2606' target='_blank' rel="noreferrer">
