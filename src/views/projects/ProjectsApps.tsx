@@ -9,7 +9,7 @@ const ProjectsApps = ({ projects, title }: { projects: Card[], title: string }) 
         <>
             <TitleContent content={title} />
             <div className="flex justify-center">
-                <div className="flex gap-2 justify-start flex-wrap pl-[5px]">
+                <div className="flex gap-2 justify-center flex-wrap pl-[5px]">
                     {listProjects()}
                 </div>
             </div>

@@ -9,7 +9,7 @@ const SmallProjects = ({ projects, title }: { projects: SmallCard[], title: stri
         <>
             <TitleContent content={title} />
             <div className="flex justify-center">
-                <div className="flex gap-3 justify-start flex-wrap pl-[5px]">
+                <div className="flex gap-3 justify-center flex-wrap pl-[5px]">
                     {false && listProjects()}
                     <p className="title text-[20px] font-bold text-white">Coming soon!...</p>
                 </div>
