@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  username      String?   @unique
+  password      String
+  name          String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  portfolio     Portfolio?
+  llmConfigs    LLMConfig[]
+}
+
+model Portfolio {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Personal info
+  fullName      String?
+  title         String?   // e.g., "Senior Developer"
+  bio           String?   @db.Text
+  avatar        String?
+  email         String?
+  phone         String?
+  location      String?
+
+  // Social links
+  github        String?
+  linkedin      String?
+  twitter       String?
+  website       String?
+
+  // Layout & Theme
+  template      String    @default("minimal") // minimal, modern, creative, developer
+  primaryColor  String    @default("#3b82f6")
+
+  // Parsed CV data (JSON)
+  skills        Json?
+  experience    Json?
+  education     Json?
+  projects      Json?
+  certifications Json?
+
+  isPublished   Boolean   @default(false)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model LLMConfig {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  provider      String    // openai, anthropic, google, groq
+  apiKey        String    // stored encrypted
+  model         String    // gpt-4, claude-3-sonnet, etc.
+  isDefault     Boolean   @default(false)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([userId, provider])
+}
