@@ -13,6 +13,9 @@ import {
   Zap,
   Paintbrush,
   Save,
+  Layers,
+  Camera,
+  Briefcase,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -52,7 +55,7 @@ const templateMeta: Record<
   creative: {
     icon: Paintbrush,
     gradient: "from-pink-500 via-rose-500 to-orange-400",
-    preview: "bg-gradient-to-br from-pink-500 via-rose-500 to-orange-400",
+    preview: "bg-[#1a1a2e]",
     accent: "bg-white/40",
   },
   developer: {
@@ -60,6 +63,24 @@ const templateMeta: Record<
     gradient: "from-emerald-500 to-teal-600",
     preview: "bg-slate-950",
     accent: "bg-emerald-500/20",
+  },
+  designer: {
+    icon: Layers,
+    gradient: "from-indigo-500 to-purple-500",
+    preview: "bg-[#fafafa]",
+    accent: "bg-indigo-500/20",
+  },
+  photographer: {
+    icon: Camera,
+    gradient: "from-amber-500 to-orange-600",
+    preview: "bg-black",
+    accent: "bg-amber-500/20",
+  },
+  executive: {
+    icon: Briefcase,
+    gradient: "from-slate-700 to-slate-900",
+    preview: "bg-white border border-slate-200",
+    accent: "bg-slate-700/20",
   },
 };
 
@@ -137,6 +158,50 @@ function TemplatePreview({ type, isSelected, onClick }: TemplatePreviewProps) {
             <div className="text-blue-400 text-[9px]">{"{ ... }"}</div>
           </div>
         )}
+        {type === "designer" && (
+          <div className="text-center p-4 w-full">
+            <div className="w-12 h-12 rounded-2xl bg-indigo-100 mx-auto mb-3 flex items-center justify-center">
+              <Layers className="w-6 h-6 text-indigo-600" />
+            </div>
+            <div className="h-2.5 w-20 bg-gray-200 rounded-full mx-auto mb-2" />
+            <div className="h-2 w-16 bg-indigo-200 rounded-full mx-auto" />
+            <div className="mt-3 grid grid-cols-2 gap-1.5">
+              <div className="h-6 bg-gray-100 rounded" />
+              <div className="h-6 bg-gray-100 rounded" />
+            </div>
+          </div>
+        )}
+        {type === "photographer" && (
+          <div className="text-center text-white p-3 w-full">
+            <Camera className="w-8 h-8 mx-auto mb-2 opacity-60" />
+            <div className="h-2.5 w-20 bg-white/30 rounded-full mx-auto mb-1.5" />
+            <div className="h-1.5 w-12 bg-amber-500/50 rounded-full mx-auto" />
+            <div className="mt-3 flex gap-1 justify-center">
+              <div className="w-4 h-6 bg-white/20 rounded-sm" />
+              <div className="w-4 h-8 bg-white/15 rounded-sm" />
+              <div className="w-4 h-5 bg-white/20 rounded-sm" />
+            </div>
+          </div>
+        )}
+        {type === "executive" && (
+          <div className="text-center p-4 w-full">
+            <div className="w-10 h-10 rounded bg-slate-800 mx-auto mb-3 flex items-center justify-center">
+              <Briefcase className="w-5 h-5 text-white" />
+            </div>
+            <div className="h-2.5 w-24 bg-slate-200 rounded mx-auto mb-2" />
+            <div className="h-1.5 w-16 bg-slate-800 rounded mx-auto" />
+            <div className="mt-3 flex justify-center gap-4">
+              <div className="text-center">
+                <div className="text-[10px] font-bold text-slate-700">10+</div>
+                <div className="text-[8px] text-slate-400">Years</div>
+              </div>
+              <div className="text-center">
+                <div className="text-[10px] font-bold text-slate-700">50+</div>
+                <div className="text-[8px] text-slate-400">Projects</div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300 rounded-xl" />
@@ -154,7 +219,7 @@ function TemplatePreview({ type, isSelected, onClick }: TemplatePreviewProps) {
             <IconComponent
               className={cn(
                 "h-3.5 w-3.5",
-                type === "minimal"
+                type === "minimal" || type === "designer" || type === "executive"
                   ? "text-slate-600 dark:text-slate-300"
                   : "text-white"
               )}

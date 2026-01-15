@@ -66,7 +66,7 @@ export interface PortfolioData {
   website: string | null;
 
   // Layout & Theme
-  template: "minimal" | "modern" | "creative" | "developer";
+  template: "minimal" | "modern" | "creative" | "developer" | "designer" | "photographer" | "executive";
   primaryColor: string;
 
   // Parsed CV data
@@ -82,7 +82,7 @@ export interface PortfolioData {
   updatedAt: Date;
 }
 
-export type TemplateType = "minimal" | "modern" | "creative" | "developer";
+export type TemplateType = "minimal" | "modern" | "creative" | "developer" | "designer" | "photographer" | "executive";
 
 export interface TemplateConfig {
   id: TemplateType;
@@ -107,7 +107,7 @@ export const TEMPLATES: TemplateConfig[] = [
   {
     id: "creative",
     name: "Creative",
-    description: "Bold colors, unique layouts, interactive elements",
+    description: "Bold colors, bento grid layout, vibrant design",
     preview: "/templates/creative.png",
   },
   {
@@ -115,5 +115,23 @@ export const TEMPLATES: TemplateConfig[] = [
     name: "Developer",
     description: "Terminal-inspired, code-focused, dark theme",
     preview: "/templates/developer.png",
+  },
+  {
+    id: "designer",
+    name: "Designer",
+    description: "Visual portfolio focus, elegant typography, project gallery",
+    preview: "/templates/designer.png",
+  },
+  {
+    id: "photographer",
+    name: "Photographer",
+    description: "Full-screen gallery, masonry layout, dramatic visuals",
+    preview: "/templates/photographer.png",
+  },
+  {
+    id: "executive",
+    name: "Executive",
+    description: "Corporate, professional, serif typography",
+    preview: "/templates/executive.png",
   },
 ];
