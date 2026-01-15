@@ -63,7 +63,7 @@ const configSchema = z.object({
   provider: z.enum(["openai", "anthropic", "google", "groq"]),
   apiKey: z.string().min(1, "API key is required"),
   model: z.string().min(1, "Please select a model"),
-  isDefault: z.boolean().default(false),
+  isDefault: z.boolean(),
 });
 
 type ConfigFormValues = z.infer<typeof configSchema>;

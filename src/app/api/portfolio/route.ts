@@ -73,14 +73,24 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const data = portfolioUpdateSchema.parse(body);
 
+    // Handle null values for JSON fields
+    const sanitizedData = {
+      ...data,
+      skills: data.skills === null ? undefined : data.skills,
+      experience: data.experience === null ? undefined : data.experience,
+      education: data.education === null ? undefined : data.education,
+      projects: data.projects === null ? undefined : data.projects,
+      certifications: data.certifications === null ? undefined : data.certifications,
+    };
+
     const portfolio = await prisma.portfolio.upsert({
       where: { userId: session.user.id },
-      update: data,
+      update: sanitizedData,
       create: {
         userId: session.user.id,
-        ...data,
-        template: data.template || "minimal",
-        primaryColor: data.primaryColor || "#3b82f6",
+        ...sanitizedData,
+        template: sanitizedData.template || "minimal",
+        primaryColor: sanitizedData.primaryColor || "#3b82f6",
       },
     });
 
@@ -88,7 +98,7 @@ export async function PUT(request: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: error.errors[0].message },
+        { error: error.issues[0].message },
         { status: 400 }
       );
     }
