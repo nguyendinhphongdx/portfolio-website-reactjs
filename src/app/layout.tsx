@@ -15,12 +15,65 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Portfolio Builder",
-  description: "Create your professional portfolio in minutes with AI-powered CV parsing",
-  manifest: "/manifest.json",
+  description:
+    "Create your professional portfolio in minutes with AI-powered CV parsing",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Portfolio Builder",
+    title: "Portfolio",
+    startupImage: [
+      {
+        url: "/apple-splash-2048-2732.png",
+        media:
+          "(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)",
+      },
+      {
+        url: "/apple-splash-1668-2388.png",
+        media:
+          "(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)",
+      },
+      {
+        url: "/apple-splash-1536-2048.png",
+        media:
+          "(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)",
+      },
+      {
+        url: "/apple-splash-1125-2436.png",
+        media:
+          "(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)",
+      },
+      {
+        url: "/apple-splash-1242-2688.png",
+        media:
+          "(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)",
+      },
+      {
+        url: "/apple-splash-750-1334.png",
+        media:
+          "(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)",
+      },
+      {
+        url: "/apple-splash-1242-2208.png",
+        media:
+          "(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)",
+      },
+      {
+        url: "/apple-splash-640-1136.png",
+        media:
+          "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)",
+      },
+    ],
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/icon-152x152.png", sizes: "152x152", type: "image/png" },
+    ],
   },
 };
 
@@ -39,16 +92,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" />
-        {/* Apple PWA icons - 180x180 is required for iPhone */}
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/icon-152x152.png" />
-        {/* Apple PWA meta tags for fullscreen */}
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Portfolio" />
+        {/* Additional meta tags for PWA compatibility */}
         <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="format-detection" content="telephone=no" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
