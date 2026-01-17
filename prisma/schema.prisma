@@ -28,33 +28,78 @@ model Portfolio {
   userId        String    @unique
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // Personal info
+  // ========== PERSONAL INFO ==========
   fullName      String?
-  title         String?   // e.g., "Senior Developer"
+  title         String?   // e.g., "Senior Frontend Developer"
+  tagline       String?   // Short catchy phrase
   bio           String?   @db.Text
   avatar        String?
+  coverImage    String?   // Hero background image
+
+  // ========== CONTACT ==========
   email         String?
   phone         String?
   location      String?
+  timezone      String?   // e.g., "Asia/Ho_Chi_Minh"
 
-  // Social links
+  // ========== SOCIAL LINKS (Dynamic Array) ==========
+  // Format: [{ type: "github", url: "...", label?: "..." }, ...]
+  socialLinks   Json?
+
+  // Legacy fields (kept for backward compatibility, will be migrated)
   github        String?
   linkedin      String?
   twitter       String?
   website       String?
+  dribbble      String?
+  behance       String?
+  youtube       String?
+  instagram     String?
+  medium        String?
+  devto         String?
+  stackoverflow String?
+  codepen       String?
 
-  // Layout & Theme
-  template      String    @default("minimal") // minimal, modern, creative, developer
+  // ========== THEME & CUSTOMIZATION ==========
+  template      String    @default("minimal")
   primaryColor  String    @default("#3b82f6")
+  secondaryColor String?
+  accentColor   String?
+  fontFamily    String?   // "inter", "poppins", "roboto", etc.
+  darkMode      Boolean   @default(false)
 
-  // Parsed CV data (JSON)
-  skills        Json?
-  experience    Json?
-  education     Json?
-  projects      Json?
+  // ========== SECTION VISIBILITY ==========
+  showSkills       Boolean @default(true)
+  showExperience   Boolean @default(true)
+  showProjects     Boolean @default(true)
+  showEducation    Boolean @default(true)
+  showCertifications Boolean @default(true)
+  showTestimonials Boolean @default(true)
+  showBlog         Boolean @default(false)
+  showAchievements Boolean @default(true)
+
+  // ========== CONTENT (JSON) ==========
+  skills         Json?
+  experience     Json?
+  education      Json?
+  projects       Json?
   certifications Json?
+  testimonials   Json?
+  achievements   Json?
+  blogPosts      Json?
+  languages      Json?     // spoken languages
+  interests      Json?     // hobbies/interests
 
+  // ========== SEO & ANALYTICS ==========
+  seoTitle          String?
+  seoDescription    String?
+  ogImage           String?
+  googleAnalyticsId String?
+
+  // ========== STATUS ==========
   isPublished   Boolean   @default(false)
+  customDomain  String?   // for future custom domain support
+  viewCount     Int       @default(0)
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

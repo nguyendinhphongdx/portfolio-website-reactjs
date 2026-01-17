@@ -46,43 +46,165 @@ export interface Certification {
   credentialId?: string;
 }
 
+// NEW: Testimonial type
+export interface Testimonial {
+  name: string;
+  role: string;
+  company?: string;
+  avatar?: string;
+  content: string;
+  linkedinUrl?: string;
+}
+
+// NEW: Achievement type
+export interface Achievement {
+  title: string;
+  description?: string;
+  date?: string;
+  icon?: "trophy" | "medal" | "star" | "award" | "certificate";
+  url?: string;
+}
+
+// NEW: BlogPost type
+export interface BlogPost {
+  title: string;
+  description?: string;
+  url: string;
+  publishedAt?: string;
+  platform?: "medium" | "devto" | "hashnode" | "personal" | "other";
+  thumbnail?: string;
+}
+
+// NEW: Language type
+export interface Language {
+  name: string;
+  level: "native" | "fluent" | "intermediate" | "beginner";
+}
+
+// Dynamic Social Link
+export interface SocialLink {
+  id: string;
+  type: SocialLinkType;
+  url: string;
+  label?: string; // Custom label, e.g., "Work GitHub" vs "Personal GitHub"
+}
+
+export type SocialLinkType =
+  | "github"
+  | "linkedin"
+  | "twitter"
+  | "website"
+  | "dribbble"
+  | "behance"
+  | "youtube"
+  | "instagram"
+  | "medium"
+  | "devto"
+  | "stackoverflow"
+  | "codepen"
+  | "facebook"
+  | "tiktok"
+  | "discord"
+  | "telegram"
+  | "email"
+  | "phone"
+  | "other";
+
+// Social Link Config for UI
+export interface SocialLinkConfig {
+  type: SocialLinkType;
+  label: string;
+  placeholder: string;
+  icon: string; // lucide icon name
+  color: string; // brand color
+}
+
 export interface PortfolioData {
   id: string;
   userId: string;
 
-  // Personal info
+  // ========== PERSONAL INFO ==========
   fullName: string | null;
   title: string | null;
+  tagline: string | null;
   bio: string | null;
   avatar: string | null;
+  coverImage: string | null;
+
+  // ========== CONTACT ==========
   email: string | null;
   phone: string | null;
   location: string | null;
+  timezone: string | null;
 
-  // Social links
+  // ========== SOCIAL LINKS (Dynamic) ==========
+  socialLinks: SocialLink[] | null;
+
+  // Legacy fields (for backward compatibility)
   github: string | null;
   linkedin: string | null;
   twitter: string | null;
   website: string | null;
+  dribbble: string | null;
+  behance: string | null;
+  youtube: string | null;
+  instagram: string | null;
+  medium: string | null;
+  devto: string | null;
+  stackoverflow: string | null;
+  codepen: string | null;
 
-  // Layout & Theme
-  template: "minimal" | "modern" | "creative" | "developer" | "designer" | "photographer" | "executive";
+  // ========== THEME & CUSTOMIZATION ==========
+  template: TemplateType;
   primaryColor: string;
+  secondaryColor: string | null;
+  accentColor: string | null;
+  fontFamily: string | null;
+  darkMode: boolean;
 
-  // Parsed CV data
+  // ========== SECTION VISIBILITY ==========
+  showSkills: boolean;
+  showExperience: boolean;
+  showProjects: boolean;
+  showEducation: boolean;
+  showCertifications: boolean;
+  showTestimonials: boolean;
+  showBlog: boolean;
+  showAchievements: boolean;
+
+  // ========== CONTENT (JSON) ==========
   skills: Skill[] | null;
   experience: Experience[] | null;
   education: Education[] | null;
   projects: Project[] | null;
   certifications: Certification[] | null;
+  testimonials: Testimonial[] | null;
+  achievements: Achievement[] | null;
+  blogPosts: BlogPost[] | null;
+  languages: Language[] | null;
+  interests: string[] | null;
 
+  // ========== SEO & ANALYTICS ==========
+  seoTitle: string | null;
+  seoDescription: string | null;
+  ogImage: string | null;
+  googleAnalyticsId: string | null;
+
+  // ========== STATUS ==========
   isPublished: boolean;
+  customDomain: string | null;
+  viewCount: number;
 
   createdAt: Date;
   updatedAt: Date;
 }
 
-export type TemplateType = "minimal" | "modern" | "creative" | "developer" | "designer" | "photographer" | "executive";
+export type TemplateType =
+  | "minimal"
+  | "modern"
+  | "glassmorphism"
+  | "neubrutalism"
+  | "bento";
 
 export interface TemplateConfig {
   id: TemplateType;
@@ -93,6 +215,12 @@ export interface TemplateConfig {
 
 export const TEMPLATES: TemplateConfig[] = [
   {
+    id: "bento",
+    name: "Bento Grid",
+    description: "Apple-inspired asymmetric grid, card-based sections",
+    preview: "/templates/bento.png",
+  },
+  {
     id: "minimal",
     name: "Minimal",
     description: "Clean and simple design with focus on content",
@@ -101,37 +229,19 @@ export const TEMPLATES: TemplateConfig[] = [
   {
     id: "modern",
     name: "Modern",
-    description: "Gradient backgrounds, glassmorphism effects, smooth animations",
+    description: "Gradient backgrounds, glow effects, smooth animations",
     preview: "/templates/modern.png",
   },
   {
-    id: "creative",
-    name: "Creative",
-    description: "Bold colors, bento grid layout, vibrant design",
-    preview: "/templates/creative.png",
+    id: "glassmorphism",
+    name: "Glassmorphism",
+    description: "Frosted glass effects, floating cards, gradient mesh backgrounds",
+    preview: "/templates/glassmorphism.png",
   },
   {
-    id: "developer",
-    name: "Developer",
-    description: "Terminal-inspired, code-focused, dark theme",
-    preview: "/templates/developer.png",
-  },
-  {
-    id: "designer",
-    name: "Designer",
-    description: "Visual portfolio focus, elegant typography, project gallery",
-    preview: "/templates/designer.png",
-  },
-  {
-    id: "photographer",
-    name: "Photographer",
-    description: "Full-screen gallery, masonry layout, dramatic visuals",
-    preview: "/templates/photographer.png",
-  },
-  {
-    id: "executive",
-    name: "Executive",
-    description: "Corporate, professional, serif typography",
-    preview: "/templates/executive.png",
+    id: "neubrutalism",
+    name: "Neubrutalism",
+    description: "Bold borders, offset shadows, raw aesthetic, high contrast",
+    preview: "/templates/neubrutalism.png",
   },
 ];

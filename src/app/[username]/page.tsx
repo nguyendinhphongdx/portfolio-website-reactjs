@@ -8,6 +8,12 @@ import type {
   Education,
   Project,
   Certification,
+  Testimonial,
+  Achievement,
+  BlogPost,
+  Language,
+  SocialLink,
+  TemplateType,
 } from "@/types/portfolio";
 
 interface PageProps {
@@ -63,25 +69,79 @@ export default async function PortfolioPage({ params }: PageProps) {
   const portfolioData: PortfolioData = {
     id: portfolio.id,
     userId: portfolio.userId,
+
+    // Personal Info
     fullName: portfolio.fullName,
     title: portfolio.title,
+    tagline: portfolio.tagline,
     bio: portfolio.bio,
     avatar: portfolio.avatar,
+    coverImage: portfolio.coverImage,
+
+    // Contact
     email: portfolio.email,
     phone: portfolio.phone,
     location: portfolio.location,
+    timezone: portfolio.timezone,
+
+    // Social Links (Dynamic)
+    socialLinks: portfolio.socialLinks as SocialLink[] | null,
+
+    // Legacy Social Links (for backward compatibility)
     github: portfolio.github,
     linkedin: portfolio.linkedin,
     twitter: portfolio.twitter,
     website: portfolio.website,
-    template: portfolio.template as "minimal" | "modern" | "creative" | "developer",
+    dribbble: portfolio.dribbble,
+    behance: portfolio.behance,
+    youtube: portfolio.youtube,
+    instagram: portfolio.instagram,
+    medium: portfolio.medium,
+    devto: portfolio.devto,
+    stackoverflow: portfolio.stackoverflow,
+    codepen: portfolio.codepen,
+
+    // Theme & Customization
+    template: portfolio.template as TemplateType,
     primaryColor: portfolio.primaryColor,
+    secondaryColor: portfolio.secondaryColor,
+    accentColor: portfolio.accentColor,
+    fontFamily: portfolio.fontFamily,
+    darkMode: portfolio.darkMode,
+
+    // Section Visibility
+    showSkills: portfolio.showSkills,
+    showExperience: portfolio.showExperience,
+    showProjects: portfolio.showProjects,
+    showEducation: portfolio.showEducation,
+    showCertifications: portfolio.showCertifications,
+    showTestimonials: portfolio.showTestimonials,
+    showBlog: portfolio.showBlog,
+    showAchievements: portfolio.showAchievements,
+
+    // Content (JSON)
     skills: portfolio.skills as Skill[] | null,
     experience: portfolio.experience as Experience[] | null,
     education: portfolio.education as Education[] | null,
     projects: portfolio.projects as Project[] | null,
     certifications: portfolio.certifications as Certification[] | null,
+    testimonials: portfolio.testimonials as Testimonial[] | null,
+    achievements: portfolio.achievements as Achievement[] | null,
+    blogPosts: portfolio.blogPosts as BlogPost[] | null,
+    languages: portfolio.languages as Language[] | null,
+    interests: portfolio.interests as string[] | null,
+
+    // SEO & Analytics
+    seoTitle: portfolio.seoTitle,
+    seoDescription: portfolio.seoDescription,
+    ogImage: portfolio.ogImage,
+    googleAnalyticsId: portfolio.googleAnalyticsId,
+
+    // Status
     isPublished: portfolio.isPublished,
+    customDomain: portfolio.customDomain,
+    viewCount: portfolio.viewCount,
+
     createdAt: portfolio.createdAt,
     updatedAt: portfolio.updatedAt,
   };

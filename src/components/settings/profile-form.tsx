@@ -11,12 +11,9 @@ import {
   Mail,
   Phone,
   MapPin,
-  Github,
-  Linkedin,
-  Twitter,
-  Globe,
   Briefcase,
   FileText,
+  Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -32,19 +29,15 @@ import {
   FormMessage,
   FormDescription,
 } from "@/components/ui/form";
-import { cn } from "@/lib/utils";
 
 const profileSchema = z.object({
   fullName: z.string().min(1, "Name is required"),
   title: z.string().optional(),
+  tagline: z.string().optional(),
   bio: z.string().optional(),
   email: z.string().email("Invalid email").optional().or(z.literal("")),
   phone: z.string().optional(),
   location: z.string().optional(),
-  github: z.string().optional(),
-  linkedin: z.string().optional(),
-  twitter: z.string().optional(),
-  website: z.string().optional(),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -58,14 +51,11 @@ export function ProfileForm() {
     defaultValues: {
       fullName: "",
       title: "",
+      tagline: "",
       bio: "",
       email: "",
       phone: "",
       location: "",
-      github: "",
-      linkedin: "",
-      twitter: "",
-      website: "",
     },
   });
 
@@ -78,14 +68,11 @@ export function ProfileForm() {
           form.reset({
             fullName: data.fullName || "",
             title: data.title || "",
+            tagline: data.tagline || "",
             bio: data.bio || "",
             email: data.email || "",
             phone: data.phone || "",
             location: data.location || "",
-            github: data.github || "",
-            linkedin: data.linkedin || "",
-            twitter: data.twitter || "",
-            website: data.website || "",
           });
         }
       } catch (error) {
@@ -197,6 +184,30 @@ export function ProfileForm() {
 
             <FormField
               control={form.control}
+              name="tagline"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-[13px] flex items-center gap-1.5">
+                    <Sparkles className="h-3.5 w-3.5 text-muted-foreground" />
+                    Tagline
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Building the future, one line of code at a time"
+                      className="h-11"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription className="text-[12px]">
+                    A short, catchy phrase that describes you
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="bio"
               render={({ field }) => (
                 <FormItem>
@@ -301,109 +312,6 @@ export function ProfileForm() {
                 </FormItem>
               )}
             />
-          </div>
-        </div>
-
-        {/* Social Links Section */}
-        <div className="space-y-5">
-          <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-500/10">
-              <Globe className="h-4 w-4 text-violet-600 dark:text-violet-400" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-[15px]">Social Links</h3>
-              <p className="text-[12px] text-muted-foreground">
-                Connect your online presence
-              </p>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border bg-card p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <FormField
-                control={form.control}
-                name="github"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[13px] flex items-center gap-1.5">
-                      <Github className="h-3.5 w-3.5 text-muted-foreground" />
-                      GitHub
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="https://github.com/username"
-                        className="h-11"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="linkedin"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[13px] flex items-center gap-1.5">
-                      <Linkedin className="h-3.5 w-3.5 text-muted-foreground" />
-                      LinkedIn
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="https://linkedin.com/in/username"
-                        className="h-11"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="twitter"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[13px] flex items-center gap-1.5">
-                      <Twitter className="h-3.5 w-3.5 text-muted-foreground" />
-                      Twitter / X
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="https://twitter.com/username"
-                        className="h-11"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="website"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[13px] flex items-center gap-1.5">
-                      <Globe className="h-3.5 w-3.5 text-muted-foreground" />
-                      Personal Website
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="https://mywebsite.com"
-                        className="h-11"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
           </div>
         </div>
 
