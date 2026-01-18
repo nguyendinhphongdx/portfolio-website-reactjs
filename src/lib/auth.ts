@@ -141,10 +141,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return true;
     },
     async jwt({ token, user, account }) {
-      if (user) {
+      // For OAuth providers, we need to get the database user ID
+      // because user.id from OAuth might be the provider's ID
+      if (account && (account.provider === "google" || account.provider === "github")) {
+        // Lookup user by email to get database ID
+        if (user?.email) {
+          const dbUser = await prisma.user.findUnique({
+            where: { email: user.email },
+            select: { id: true },
+          });
+          if (dbUser) {
+            token.id = dbUser.id;
+          }
+        }
+        token.provider = account.provider;
+      } else if (user) {
+        // For credentials login, user.id is already the database ID
         token.id = user.id;
       }
-      if (account) {
+      if (account && !token.provider) {
         token.provider = account.provider;
       }
       return token;

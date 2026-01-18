@@ -1,4 +1,4 @@
-import { generateText, Output } from "ai";
+import { generateText } from "ai";
 import { z } from "zod";
 import { getLanguageModel } from "./llm/providers";
 import type { LLMProvider } from "@/types/llm";
@@ -89,44 +89,71 @@ const cvSchema = z.object({
 
 export type ParsedCV = z.infer<typeof cvSchema>;
 
-const systemPrompt = `You are a CV/Resume parser. Extract ONLY explicitly stated information.
+const systemPrompt = `You are an expert CV/Resume parser. Your task is to extract ALL available information from the CV text.
 
-SECTIONS TO LOOK FOR:
-- Summary / Profile / About
-- Experience / Work History / Employment
-- Education / Academic Background
-- Skills / Technical Skills / Competencies
-- Projects / Portfolio
-- Certifications / Licenses
+EXTRACT THESE FIELDS:
 
-SCHEMA FIELDS:
-- fullName: Person's full name only
-- title: Current/most recent job title as written
-- bio: Professional summary paragraph if present
-- email: Email address
-- phone: Phone number
-- location: City, Country
-- github: GitHub URL (https://github.com/...)
-- linkedin: LinkedIn URL (https://linkedin.com/in/...)
-- twitter: Twitter/X URL
-- website: Personal website URL
-- skills: Array of {name, level?, category?}
-  - level: ONLY if explicitly stated (e.g. "Advanced", "Expert", "5 years")
-  - category: Frontend/Backend/DevOps/Database/Mobile/Other
-- experience: Array of {company, position, startDate, endDate?, current?, description?, highlights?, location?}
-- education: Array of {institution, degree, field?, startDate, endDate?}
-- projects: Array of {name, description?, url?, github?, technologies?}
-- certifications: Array of {name, issuer, date?, url?}
+1. PERSONAL INFO:
+   - fullName: The person's full name (usually at the top)
+   - title: Job title, position, or professional headline
+   - bio: Summary, objective, or about section text
+   - email: Email address (look for @ symbol)
+   - phone: Phone number (any format)
+   - location: City, Country, or address
 
-STRICT RULES:
-1. Extract ONLY what is EXPLICITLY written - do NOT infer or guess
-2. Do NOT derive skills from job titles or descriptions
-3. Do NOT assume skill levels - only extract if clearly stated
-4. Do NOT guess current employment - only set current=true if "Present" or "Current" is written
-5. Dates: Use "YYYY-MM" or "YYYY" format. If "Present"/"Current", set endDate=null and current=true
-6. If a field is unclear or ambiguous, OMIT it entirely
-7. URLs must be clean without tracking parameters
-8. Preserve original text - do not paraphrase or summarize job descriptions`;
+2. SOCIAL/LINKS:
+   - github: GitHub URL (github.com/...)
+   - linkedin: LinkedIn URL (linkedin.com/in/...)
+   - twitter: Twitter/X URL
+   - website: Personal website or portfolio URL
+
+3. SKILLS:
+   Extract ALL skills mentioned. For each skill:
+   - name: The skill name exactly as written
+   - level: Only if explicitly stated (beginner/intermediate/advanced/expert)
+   - category: Categorize as Frontend/Backend/DevOps/Database/Mobile/Other
+
+4. EXPERIENCE:
+   Extract ALL work experiences. For each:
+   - company: Company/organization name
+   - position: Job title
+   - startDate: Start date (YYYY-MM or YYYY format)
+   - endDate: End date (YYYY-MM or YYYY, or null if current)
+   - current: true if "Present", "Current", "Now", or ongoing
+   - description: Job description text
+   - highlights: Array of achievements/responsibilities
+   - location: Work location if mentioned
+
+5. EDUCATION:
+   Extract ALL education entries. For each:
+   - institution: School/university name
+   - degree: Degree type (Bachelor, Master, PhD, etc.)
+   - field: Field of study/major
+   - startDate: Start year
+   - endDate: End year (null if current)
+   - gpa: GPA if mentioned
+
+6. PROJECTS:
+   Extract ALL projects mentioned. For each:
+   - name: Project name
+   - description: What the project does
+   - url: Live URL if provided
+   - github: GitHub repo URL if provided
+   - technologies: Array of technologies used
+
+7. CERTIFICATIONS:
+   Extract ALL certifications. For each:
+   - name: Certification name
+   - issuer: Issuing organization
+   - date: Date obtained
+   - credentialId: ID if provided
+
+IMPORTANT:
+- Extract as much information as possible
+- For dates, convert to YYYY-MM or YYYY format
+- If "Present" or "Current" is used for end date, set endDate to null and current to true
+- Include ALL skills listed, even if in a comma-separated list
+- Look for skills in dedicated sections AND in job descriptions`;
 
 export async function parseCV(
   cvText: string,
@@ -136,19 +163,70 @@ export async function parseCV(
 ): Promise<ParsedCV> {
   const languageModel = getLanguageModel(provider, apiKey, model);
 
-  const { output } = await generateText({
-    model: languageModel,
-    temperature: 0, // Deterministic output for CV parsing - no creativity needed
-    output: Output.object({
-      schema: cvSchema,
-    }),
-    prompt: `${systemPrompt}
+  // Log CV text length for debugging (not content for PII safety)
+  console.log("CV parsing: textLength=%d, provider=%s, model=%s", cvText.length, provider, model);
+
+  const jsonPrompt = `${systemPrompt}
+
+RESPONSE FORMAT:
+You MUST respond with ONLY a valid JSON object (no markdown, no code blocks, no explanation).
+The JSON must follow this exact structure:
+{
+  "fullName": "string or null",
+  "title": "string or null",
+  "bio": "string or null",
+  "email": "string or null",
+  "phone": "string or null",
+  "location": "string or null",
+  "github": "string or null",
+  "linkedin": "string or null",
+  "twitter": "string or null",
+  "website": "string or null",
+  "skills": [{"name": "string", "level": "beginner|intermediate|advanced|expert or null", "category": "string or null"}],
+  "experience": [{"company": "string", "position": "string", "startDate": "YYYY-MM", "endDate": "YYYY-MM or null", "current": true/false, "description": "string or null", "highlights": ["string"], "location": "string or null"}],
+  "education": [{"institution": "string", "degree": "string", "field": "string or null", "startDate": "YYYY", "endDate": "YYYY or null", "current": true/false, "gpa": "string or null"}],
+  "projects": [{"name": "string", "description": "string or null", "url": "string or null", "github": "string or null", "technologies": ["string"]}],
+  "certifications": [{"name": "string", "issuer": "string", "date": "string or null", "credentialId": "string or null"}]
+}
 
 CV Content:
-${cvText}`,
+${cvText}
+
+RESPOND WITH JSON ONLY:`;
+
+  const { text } = await generateText({
+    model: languageModel,
+    temperature: 0.1,
+    prompt: jsonPrompt,
   });
 
-  return output ?? {};
+  // Log raw response for debugging
+  console.log("CV parse raw response length:", text?.length || 0);
+
+  // Parse JSON from response
+  try {
+    // Clean up response - remove markdown code blocks if present
+    let jsonStr = text || "{}";
+    jsonStr = jsonStr.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+
+    const parsed = JSON.parse(jsonStr);
+
+    // Validate with schema (will strip extra fields and provide defaults)
+    const validated = cvSchema.safeParse(parsed);
+
+    if (validated.success) {
+      console.log("CV parsed fields:", Object.keys(validated.data).filter(k => validated.data[k as keyof typeof validated.data] !== undefined));
+      return validated.data;
+    } else {
+      console.error("CV schema validation failed:", validated.error.issues);
+      // Return parsed data anyway, even if it doesn't fully match schema
+      return parsed as ParsedCV;
+    }
+  } catch (err) {
+    console.error("CV JSON parse error:", err instanceof Error ? err.message : "Unknown error");
+    console.error("Raw response preview:", text?.substring(0, 200));
+    throw new Error("Failed to parse CV response. Please try again.");
+  }
 }
 
 /**
@@ -161,29 +239,22 @@ async function extractTextFromFile(
 ): Promise<string> {
   const buffer = Buffer.from(fileBuffer);
 
-  // PDF extraction
+  // PDF extraction using pdf-parse-new
   if (fileType === "application/pdf" || fileName?.endsWith(".pdf")) {
     try {
-      const { extractText, getDocumentProxy } = await import("unpdf");
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const pdfParse = require("pdf-parse-new");
+      const result = await pdfParse(buffer);
+      const extractedText = result.text || "";
 
-      // First create a document proxy from the PDF buffer
-      const pdf = await getDocumentProxy(new Uint8Array(buffer));
-
-      // Then extract text with mergePages option
-      const result = await extractText(pdf, { mergePages: true });
-      // Only log non-sensitive metadata
-      console.log("PDF extraction: pages=%d, textLength=%d", result.totalPages, typeof result.text === 'string' ? result.text.length : 0);
-
-      const extractedText = typeof result.text === 'string' ? result.text : '';
-
-      // Clean up PDF document
-      await pdf.destroy();
+      // Log non-sensitive metadata
+      console.log("PDF extraction: pages=%d, textLength=%d", result.numpages, extractedText.length);
 
       if (extractedText.trim().length > 0) {
         return extractedText;
       }
 
-      // If unpdf returns empty, the PDF might be image-based
+      // If no text extracted, the PDF might be image-based
       throw new Error("PDF appears to be image-based or has no extractable text. Please use a text-based PDF or DOCX file.");
     } catch (err) {
       // Only log error type, not content (PII safety)

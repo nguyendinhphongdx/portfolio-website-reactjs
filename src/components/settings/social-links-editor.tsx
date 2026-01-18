@@ -4,8 +4,6 @@ import { useState } from "react";
 import {
   Plus,
   Trash2,
-  GripVertical,
-  Link as LinkIcon,
   Github,
   Linkedin,
   Twitter,
@@ -22,6 +20,8 @@ import {
   Mail,
   Phone,
   MoreHorizontal,
+  Pencil,
+  Link as LinkIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,6 +43,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { SortableList } from "@/components/ui/sortable-list";
 import type { SocialLink, SocialLinkType } from "@/types/portfolio";
 
 interface SocialLinksEditorProps {
@@ -220,37 +221,21 @@ export function SocialLinksEditor({ links, onChange }: SocialLinksEditorProps) {
     onChange(links.filter((_, i) => i !== index));
   };
 
-  const moveLink = (index: number, direction: "up" | "down") => {
-    const newIndex = direction === "up" ? index - 1 : index + 1;
-    if (newIndex < 0 || newIndex >= links.length) return;
-
-    const updated = [...links];
-    [updated[index], updated[newIndex]] = [updated[newIndex], updated[index]];
-    onChange(updated);
-  };
-
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-500/10">
-            <LinkIcon className="h-4 w-4 text-violet-600 dark:text-violet-400" />
-          </div>
-          <div>
-            <h3 className="font-semibold text-[15px]">Social Links</h3>
-            <p className="text-[11px] text-muted-foreground">
-              {links.length} link{links.length !== 1 ? "s" : ""} added
-            </p>
-          </div>
-        </div>
-
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button size="sm" onClick={() => handleOpenDialog()}>
-              <Plus className="h-4 w-4 mr-1" />
-              Add Link
-            </Button>
-          </DialogTrigger>
+      {/* Add Button */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full border-dashed"
+            onClick={() => handleOpenDialog()}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Link
+          </Button>
+        </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>
@@ -326,31 +311,20 @@ export function SocialLinksEditor({ links, onChange }: SocialLinksEditorProps) {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-      </div>
 
       {/* Links List */}
       {links.length > 0 ? (
-        <div className="space-y-2">
-          {links.map((link, index) => {
+        <SortableList
+          items={links}
+          onReorder={onChange}
+          getItemId={(link) => link.id}
+          className="space-y-2"
+          renderItem={(link, index) => {
             const config = socialLinkConfigs[link.type];
             const Icon = config.icon;
             return (
-              <div
-                key={link.id}
-                className="group flex items-center gap-3 p-3 rounded-xl border bg-card hover:shadow-sm transition-all"
-              >
-                <button
-                  className="cursor-grab opacity-0 group-hover:opacity-50 hover:!opacity-100 transition-opacity"
-                  title="Drag to reorder"
-                >
-                  <GripVertical className="h-4 w-4 text-muted-foreground" />
-                </button>
-
-                <div
-                  className={cn(
-                    "flex items-center justify-center w-9 h-9 rounded-lg bg-muted"
-                  )}
-                >
+              <div className="group flex items-center gap-3 p-3 rounded-xl border bg-card hover:shadow-sm transition-all">
+                <div className={cn("flex items-center justify-center w-9 h-9 rounded-lg bg-muted")}>
                   <Icon className={cn("h-5 w-5", config.color)} />
                 </div>
 
@@ -370,7 +344,7 @@ export function SocialLinksEditor({ links, onChange }: SocialLinksEditorProps) {
                     className="h-8 w-8"
                     onClick={() => handleOpenDialog(link, index)}
                   >
-                    <Code className="h-4 w-4" />
+                    <Pencil className="h-4 w-4" />
                   </Button>
                   <Button
                     variant="ghost"
@@ -383,8 +357,8 @@ export function SocialLinksEditor({ links, onChange }: SocialLinksEditorProps) {
                 </div>
               </div>
             );
-          })}
-        </div>
+          }}
+        />
       ) : (
         <div className="rounded-xl border border-dashed p-6 text-center">
           <LinkIcon className="h-8 w-8 mx-auto text-muted-foreground mb-2" />

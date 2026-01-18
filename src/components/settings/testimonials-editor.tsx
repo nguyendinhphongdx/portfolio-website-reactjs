@@ -15,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { SortableList } from "@/components/ui/sortable-list";
 import type { Testimonial } from "@/types/portfolio";
 
 interface TestimonialsEditorProps {
@@ -184,12 +185,13 @@ export function TestimonialsEditor({ testimonials, onChange }: TestimonialsEdito
 
       {/* Testimonials List */}
       {testimonials.length > 0 ? (
-        <div className="space-y-3">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className="group relative rounded-xl border bg-card p-4 hover:shadow-md transition-all"
-            >
+        <SortableList
+          items={testimonials}
+          onReorder={onChange}
+          getItemId={(_, index) => `testimonial-${index}`}
+          className="space-y-3"
+          renderItem={(testimonial, index) => (
+            <div className="group relative rounded-xl border bg-card p-4 hover:shadow-md transition-all">
               <Quote className="absolute top-4 right-4 h-8 w-8 text-muted-foreground/10" />
 
               <p className="text-[13px] text-muted-foreground leading-relaxed mb-4 pr-8 line-clamp-3">
@@ -250,8 +252,8 @@ export function TestimonialsEditor({ testimonials, onChange }: TestimonialsEdito
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          )}
+        />
       ) : (
         <div className="rounded-xl border border-dashed p-6 text-center">
           <Quote className="h-8 w-8 mx-auto text-muted-foreground mb-2" />

@@ -1,24 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
   Loader2,
-  Save,
   User,
-  Mail,
   Briefcase,
   Sparkles,
   Code2,
   FolderKanban,
   GraduationCap,
+  Award,
   Link as LinkIcon,
+  FileText,
 } from "lucide-react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -28,19 +27,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  FormDescription,
 } from "@/components/ui/form";
 import { SkillsEditor } from "@/components/settings/skills-editor";
 import { ExperienceEditor } from "@/components/settings/experience-editor";
 import { ProjectsEditor } from "@/components/settings/projects-editor";
 import { EducationEditor } from "@/components/settings/education-editor";
+import { CertificationsEditor } from "@/components/settings/certifications-editor";
 import { SocialLinksEditor } from "@/components/settings/social-links-editor";
 import { CollapsibleSection } from "@/components/settings/collapsible-section";
+import { FileUploader } from "@/components/settings/file-uploader";
 import type {
   Skill,
   Experience,
   Project,
   Education,
+  Certification,
   SocialLink,
   SocialLinkType,
 } from "@/types/portfolio";
@@ -57,7 +58,6 @@ const profileSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
-// Helper to migrate legacy social links
 function migrateLegacyLinks(data: Record<string, unknown>): SocialLink[] {
   if (data.socialLinks && Array.isArray(data.socialLinks)) {
     return data.socialLinks as SocialLink[];
@@ -84,16 +84,20 @@ function migrateLegacyLinks(data: Record<string, unknown>): SocialLink[] {
   return links;
 }
 
-export default function ProfilePage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isFetching, setIsFetching] = useState(true);
+type SavingSection = "basic" | "social" | "skills" | "experience" | "projects" | "education" | "certifications" | "media" | null;
 
-  // Content states
+export default function ProfilePage() {
+  const [isFetching, setIsFetching] = useState(true);
+  const [savingSection, setSavingSection] = useState<SavingSection>(null);
+
   const [skills, setSkills] = useState<Skill[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [education, setEducation] = useState<Education[]>([]);
+  const [certifications, setCertifications] = useState<Certification[]>([]);
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
+  const [avatar, setAvatar] = useState<string | null>(null);
+  const [cvUrl, setCvUrl] = useState<string | null>(null);
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -127,7 +131,10 @@ export default function ProfilePage() {
           setExperiences(data.experience || []);
           setProjects(data.projects || []);
           setEducation(data.education || []);
+          setCertifications(data.certifications || []);
           setSocialLinks(migrateLegacyLinks(data));
+          setAvatar(data.avatar || null);
+          setCvUrl(data.cvUrl || null);
         }
       } catch (error) {
         console.error("Failed to fetch portfolio:", error);
@@ -140,40 +147,71 @@ export default function ProfilePage() {
     fetchPortfolio();
   }, [form]);
 
-  async function handleSave() {
-    const isValid = await form.trigger();
-    if (!isValid) {
-      toast.error("Please fix the errors in the form");
-      return;
-    }
-
-    setIsLoading(true);
+  const saveSection = useCallback(async (section: SavingSection, data: Record<string, unknown>) => {
+    setSavingSection(section);
     try {
-      const formValues = form.getValues();
       const response = await fetch("/api/portfolio", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...formValues,
-          skills,
-          experience: experiences,
-          projects,
-          education,
-          socialLinks,
-        }),
+        body: JSON.stringify(data),
       });
 
       if (!response.ok) {
         throw new Error("Failed to update");
       }
 
-      toast.success("Portfolio saved successfully");
+      toast.success("Saved successfully");
     } catch {
-      toast.error("Failed to save portfolio");
+      toast.error("Failed to save");
     } finally {
-      setIsLoading(false);
+      setSavingSection(null);
     }
-  }
+  }, []);
+
+  const handleSaveBasicInfo = useCallback(async () => {
+    const isValid = await form.trigger(["fullName", "title", "tagline", "bio", "email", "location"]);
+    if (!isValid) {
+      toast.error("Please fix the errors");
+      return;
+    }
+    const values = form.getValues();
+    await saveSection("basic", {
+      fullName: values.fullName,
+      title: values.title,
+      tagline: values.tagline,
+      bio: values.bio,
+      email: values.email,
+      location: values.location,
+    });
+  }, [form, saveSection]);
+
+  const handleSaveSocialLinks = useCallback(async () => {
+    await saveSection("social", { socialLinks });
+  }, [saveSection, socialLinks]);
+
+  const handleSaveSkills = useCallback(async () => {
+    await saveSection("skills", { skills });
+  }, [saveSection, skills]);
+
+  const handleSaveExperience = useCallback(async () => {
+    await saveSection("experience", { experience: experiences });
+  }, [saveSection, experiences]);
+
+  const handleSaveProjects = useCallback(async () => {
+    await saveSection("projects", { projects });
+  }, [saveSection, projects]);
+
+  const handleSaveEducation = useCallback(async () => {
+    await saveSection("education", { education });
+  }, [saveSection, education]);
+
+  const handleSaveCertifications = useCallback(async () => {
+    await saveSection("certifications", { certifications });
+  }, [saveSection, certifications]);
+
+  const handleSaveMedia = useCallback(async () => {
+    await saveSection("media", { avatar, cvUrl });
+  }, [saveSection, avatar, cvUrl]);
 
   if (isFetching) {
     return (
@@ -188,68 +226,112 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="space-y-6 animate-fade-up pb-8">
+    <div className="space-y-6 pb-8">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex items-start gap-4">
-          <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 shrink-0">
-            <User className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight">Profile</h2>
-            <p className="text-muted-foreground mt-1">
-              Manage all your portfolio information
-            </p>
-          </div>
-        </div>
-
-        <Button onClick={handleSave} disabled={isLoading} size="lg">
-          {isLoading ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Save className="mr-2 h-4 w-4" />
-          )}
-          Save All
-        </Button>
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight">Profile</h1>
+        <p className="text-muted-foreground text-sm mt-1">
+          Manage your portfolio information
+        </p>
       </div>
 
       <Form {...form}>
-        <div className="space-y-4">
-          {/* Basic Info Section */}
+        <div className="space-y-3">
+          {/* Media - Avatar & CV */}
+          <CollapsibleSection
+            title="Media"
+            icon={FileText}
+            iconColor="text-rose-600 dark:text-rose-400"
+            bgColor="bg-rose-500/10"
+            defaultOpen={true}
+            onSave={handleSaveMedia}
+            isSaving={savingSection === "media"}
+          >
+            <div className="space-y-4 pt-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Avatar Upload */}
+                <div className="space-y-2">
+                  <label className="text-xs font-medium">Profile Photo</label>
+                  <FileUploader
+                    type="avatar"
+                    value={avatar}
+                    onChange={setAvatar}
+                  />
+                </div>
+
+                {/* CV Upload */}
+                <div className="space-y-2">
+                  <label className="text-xs font-medium">CV / Resume</label>
+                  <FileUploader
+                    type="cv"
+                    value={cvUrl}
+                    onChange={setCvUrl}
+                  />
+                </div>
+              </div>
+            </div>
+          </CollapsibleSection>
+
+          {/* Basic Info */}
           <CollapsibleSection
             title="Basic Information"
-            description="Your name, title, and bio"
             icon={User}
             iconColor="text-blue-600 dark:text-blue-400"
             bgColor="bg-blue-500/10"
-            defaultOpen={true}
+            onSave={handleSaveBasicInfo}
+            isSaving={savingSection === "basic"}
           >
-            <div className="space-y-5 pt-3">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="space-y-4 pt-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <FormField
                   control={form.control}
                   name="fullName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[13px]">
+                      <FormLabel className="text-xs">
                         Full Name <span className="text-destructive">*</span>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="John Doe" className="h-11" {...field} />
+                        <Input placeholder="John Doe" className="h-9" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[13px]">Professional Title</FormLabel>
+                      <FormLabel className="text-xs">Title</FormLabel>
                       <FormControl>
-                        <Input placeholder="Senior Software Engineer" className="h-11" {...field} />
+                        <Input placeholder="Software Engineer" className="h-9" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">Email</FormLabel>
+                      <FormControl>
+                        <Input type="email" placeholder="you@example.com" className="h-9" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">Location</FormLabel>
+                      <FormControl>
+                        <Input placeholder="San Francisco, CA" className="h-9" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -262,20 +344,17 @@ export default function ProfilePage() {
                 name="tagline"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[13px] flex items-center gap-1.5">
-                      <Sparkles className="h-3.5 w-3.5 text-muted-foreground" />
+                    <FormLabel className="text-xs flex items-center gap-1">
+                      <Sparkles className="h-3 w-3" />
                       Tagline
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Building the future, one line of code at a time"
-                        className="h-11"
+                        placeholder="Building the future, one line of code at a time..."
+                        className="h-9"
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription className="text-[12px]">
-                      A short, catchy phrase that describes you
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -286,11 +365,11 @@ export default function ProfilePage() {
                 name="bio"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[13px]">Bio</FormLabel>
+                    <FormLabel className="text-xs">Bio</FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="Tell visitors about yourself..."
-                        className="min-h-[100px] resize-none"
+                        className="min-h-20 resize-none text-sm"
                         {...field}
                       />
                     </FormControl>
@@ -301,139 +380,97 @@ export default function ProfilePage() {
             </div>
           </CollapsibleSection>
 
-          {/* Contact Info Section */}
-          <CollapsibleSection
-            title="Contact Information"
-            description="How people can reach you"
-            icon={Mail}
-            iconColor="text-emerald-600 dark:text-emerald-400"
-            bgColor="bg-emerald-500/10"
-          >
-            <div className="space-y-5 pt-3">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[13px]">Email</FormLabel>
-                      <FormControl>
-                        <Input type="email" placeholder="contact@example.com" className="h-11" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[13px]">Phone</FormLabel>
-                      <FormControl>
-                        <Input placeholder="+1 234 567 890" className="h-11" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[13px]">Location</FormLabel>
-                    <FormControl>
-                      <Input placeholder="San Francisco, CA" className="h-11" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </CollapsibleSection>
-
-          {/* Social Links Section */}
+          {/* Social Links */}
           <CollapsibleSection
             title="Social Links"
-            description={`${socialLinks.length} link${socialLinks.length !== 1 ? "s" : ""} added`}
             icon={LinkIcon}
             iconColor="text-violet-600 dark:text-violet-400"
             bgColor="bg-violet-500/10"
+            badge={socialLinks.length}
+            onSave={handleSaveSocialLinks}
+            isSaving={savingSection === "social"}
           >
             <div className="pt-3">
               <SocialLinksEditor links={socialLinks} onChange={setSocialLinks} />
             </div>
           </CollapsibleSection>
 
-          {/* Skills Section */}
+          {/* Skills */}
           <CollapsibleSection
             title="Skills"
-            description={`${skills.length} skill${skills.length !== 1 ? "s" : ""} added`}
             icon={Code2}
             iconColor="text-purple-600 dark:text-purple-400"
             bgColor="bg-purple-500/10"
+            badge={skills.length}
+            onSave={handleSaveSkills}
+            isSaving={savingSection === "skills"}
           >
             <div className="pt-3">
               <SkillsEditor skills={skills} onChange={setSkills} />
             </div>
           </CollapsibleSection>
 
-          {/* Experience Section */}
+          {/* Experience */}
           <CollapsibleSection
             title="Experience"
-            description={`${experiences.length} position${experiences.length !== 1 ? "s" : ""} added`}
             icon={Briefcase}
             iconColor="text-sky-600 dark:text-sky-400"
             bgColor="bg-sky-500/10"
+            badge={experiences.length}
+            onSave={handleSaveExperience}
+            isSaving={savingSection === "experience"}
           >
             <div className="pt-3">
               <ExperienceEditor experiences={experiences} onChange={setExperiences} />
             </div>
           </CollapsibleSection>
 
-          {/* Projects Section */}
+          {/* Projects */}
           <CollapsibleSection
             title="Projects"
-            description={`${projects.length} project${projects.length !== 1 ? "s" : ""} added`}
             icon={FolderKanban}
             iconColor="text-teal-600 dark:text-teal-400"
             bgColor="bg-teal-500/10"
+            badge={projects.length}
+            onSave={handleSaveProjects}
+            isSaving={savingSection === "projects"}
           >
             <div className="pt-3">
               <ProjectsEditor projects={projects} onChange={setProjects} />
             </div>
           </CollapsibleSection>
 
-          {/* Education Section */}
+          {/* Education */}
           <CollapsibleSection
             title="Education"
-            description={`${education.length} entr${education.length !== 1 ? "ies" : "y"} added`}
             icon={GraduationCap}
             iconColor="text-amber-600 dark:text-amber-400"
             bgColor="bg-amber-500/10"
+            badge={education.length}
+            onSave={handleSaveEducation}
+            isSaving={savingSection === "education"}
           >
             <div className="pt-3">
               <EducationEditor education={education} onChange={setEducation} />
             </div>
           </CollapsibleSection>
+
+          {/* Certifications */}
+          <CollapsibleSection
+            title="Certifications"
+            icon={Award}
+            iconColor="text-emerald-600 dark:text-emerald-400"
+            bgColor="bg-emerald-500/10"
+            badge={certifications.length}
+            onSave={handleSaveCertifications}
+            isSaving={savingSection === "certifications"}
+          >
+            <div className="pt-3">
+              <CertificationsEditor certifications={certifications} onChange={setCertifications} />
+            </div>
+          </CollapsibleSection>
         </div>
       </Form>
-
-      {/* Sticky Save Button (mobile) */}
-      <div className="fixed bottom-4 right-4 md:hidden">
-        <Button onClick={handleSave} disabled={isLoading} size="lg" className="shadow-lg">
-          {isLoading ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Save className="mr-2 h-4 w-4" />
-          )}
-          Save
-        </Button>
-      </div>
     </div>
   );
 }

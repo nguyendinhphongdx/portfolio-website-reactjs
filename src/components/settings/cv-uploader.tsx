@@ -46,10 +46,12 @@ export function CVUploader({ onParsed }: CVUploaderProps) {
     onDrop,
     accept: {
       "application/pdf": [".pdf"],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+      "application/msword": [".doc"],
       "text/plain": [".txt"],
     },
     maxFiles: 1,
-    maxSize: 5 * 1024 * 1024,
+    maxSize: 10 * 1024 * 1024, // 10MB
   });
 
   async function handleParse(type: "file" | "text") {
@@ -93,10 +95,33 @@ export function CVUploader({ onParsed }: CVUploaderProps) {
     if (!parsedData) return;
 
     try {
+      // Convert legacy social link fields to socialLinks array
+      const socialLinks: { id: string; type: string; url: string }[] = [];
+
+      if (parsedData.github) {
+        socialLinks.push({ id: crypto.randomUUID(), type: "github", url: parsedData.github });
+      }
+      if (parsedData.linkedin) {
+        socialLinks.push({ id: crypto.randomUUID(), type: "linkedin", url: parsedData.linkedin });
+      }
+      if (parsedData.twitter) {
+        socialLinks.push({ id: crypto.randomUUID(), type: "twitter", url: parsedData.twitter });
+      }
+      if (parsedData.website) {
+        socialLinks.push({ id: crypto.randomUUID(), type: "website", url: parsedData.website });
+      }
+
+      // Prepare data without legacy fields
+      const { github, linkedin, twitter, website, ...restData } = parsedData;
+      const dataToSend = {
+        ...restData,
+        ...(socialLinks.length > 0 && { socialLinks }),
+      };
+
       const response = await fetch("/api/portfolio", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsedData),
+        body: JSON.stringify(dataToSend),
       });
 
       if (!response.ok) {
@@ -176,7 +201,7 @@ export function CVUploader({ onParsed }: CVUploaderProps) {
                       or click to browse files
                     </p>
                     <p className="text-xs text-muted-foreground mt-3">
-                      Supports PDF and TXT • Max 5MB
+                      Supports PDF, DOCX, DOC, TXT • Max 10MB
                     </p>
                   </div>
                 )}

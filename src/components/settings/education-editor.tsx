@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { SortableList } from "@/components/ui/sortable-list";
 import type { Education } from "@/types/portfolio";
 
 interface EducationEditorProps {
@@ -219,12 +220,13 @@ export function EducationEditor({ education, onChange }: EducationEditorProps) {
 
       {/* Education List */}
       {education.length > 0 ? (
-        <div className="space-y-3">
-          {education.map((edu, index) => (
-            <div
-              key={index}
-              className="group relative rounded-xl border bg-card p-4 hover:shadow-md transition-all"
-            >
+        <SortableList
+          items={education}
+          onReorder={onChange}
+          getItemId={(_, index) => `edu-${index}`}
+          className="space-y-3"
+          renderItem={(edu, index) => (
+            <div className="group relative rounded-xl border bg-card p-4 hover:shadow-md transition-all">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex gap-3">
                   <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center shrink-0">
@@ -280,8 +282,8 @@ export function EducationEditor({ education, onChange }: EducationEditorProps) {
                 </div>
               )}
             </div>
-          ))}
-        </div>
+          )}
+        />
       ) : (
         <div className="rounded-xl border border-dashed p-6 text-center">
           <GraduationCap className="h-8 w-8 mx-auto text-muted-foreground mb-2" />

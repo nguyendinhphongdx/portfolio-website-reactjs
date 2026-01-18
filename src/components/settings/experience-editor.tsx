@@ -17,6 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { SortableList } from "@/components/ui/sortable-list";
 import type { Experience } from "@/types/portfolio";
 
 interface ExperienceEditorProps {
@@ -265,12 +266,13 @@ export function ExperienceEditor({ experiences, onChange }: ExperienceEditorProp
 
       {/* Experience List */}
       {experiences.length > 0 ? (
-        <div className="space-y-3">
-          {experiences.map((exp, index) => (
-            <div
-              key={index}
-              className="group relative rounded-xl border bg-card p-4 hover:shadow-md transition-all"
-            >
+        <SortableList
+          items={experiences}
+          onReorder={onChange}
+          getItemId={(_, index) => `exp-${index}`}
+          className="space-y-3"
+          renderItem={(exp, index) => (
+            <div className="group relative rounded-xl border bg-card p-4 hover:shadow-md transition-all">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex gap-3">
                   <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
@@ -327,8 +329,8 @@ export function ExperienceEditor({ experiences, onChange }: ExperienceEditorProp
                 </div>
               )}
             </div>
-          ))}
-        </div>
+          )}
+        />
       ) : (
         <div className="rounded-xl border border-dashed p-6 text-center">
           <Briefcase className="h-8 w-8 mx-auto text-muted-foreground mb-2" />

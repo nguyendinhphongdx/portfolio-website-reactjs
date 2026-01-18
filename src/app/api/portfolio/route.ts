@@ -11,26 +11,13 @@ const portfolioUpdateSchema = z.object({
   bio: z.string().optional().nullable(),
   avatar: z.string().optional().nullable(),
   coverImage: z.string().optional().nullable(),
+  cvUrl: z.string().optional().nullable(),
 
   // Contact
   email: z.string().email().optional().nullable().or(z.literal("")),
   phone: z.string().optional().nullable(),
   location: z.string().optional().nullable(),
   timezone: z.string().optional().nullable(),
-
-  // Social links
-  github: z.string().optional().nullable(),
-  linkedin: z.string().optional().nullable(),
-  twitter: z.string().optional().nullable(),
-  website: z.string().optional().nullable(),
-  dribbble: z.string().optional().nullable(),
-  behance: z.string().optional().nullable(),
-  youtube: z.string().optional().nullable(),
-  instagram: z.string().optional().nullable(),
-  medium: z.string().optional().nullable(),
-  devto: z.string().optional().nullable(),
-  stackoverflow: z.string().optional().nullable(),
-  codepen: z.string().optional().nullable(),
 
   // Theme & Customization
   template: z.enum([
@@ -53,6 +40,14 @@ const portfolioUpdateSchema = z.object({
   showTestimonials: z.boolean().optional(),
   showBlog: z.boolean().optional(),
   showAchievements: z.boolean().optional(),
+
+  // Social links (dynamic array)
+  socialLinks: z.array(z.object({
+    id: z.string(),
+    type: z.string(),
+    url: z.string(),
+    label: z.string().optional(),
+  })).optional().nullable(),
 
   // Content (JSON)
   skills: z.array(z.any()).optional().nullable(),
@@ -128,6 +123,7 @@ export async function PUT(request: NextRequest) {
     // Handle null values for JSON fields
     const sanitizedData = {
       ...data,
+      socialLinks: data.socialLinks === null ? undefined : data.socialLinks,
       skills: data.skills === null ? undefined : data.skills,
       experience: data.experience === null ? undefined : data.experience,
       education: data.education === null ? undefined : data.education,

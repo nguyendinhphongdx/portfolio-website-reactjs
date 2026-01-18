@@ -11,46 +11,48 @@ import {
   BookOpen,
   Code,
   Codepen,
+  Facebook,
+  MessageCircle,
+  Send,
+  Mail,
+  Phone,
+  LinkIcon,
+  type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { PortfolioData } from "@/types/portfolio";
+import type { SocialLink } from "@/types/portfolio";
 
 interface SocialLinksProps {
-  data: Pick<
-    PortfolioData,
-    | "github"
-    | "linkedin"
-    | "twitter"
-    | "website"
-    | "dribbble"
-    | "behance"
-    | "youtube"
-    | "instagram"
-    | "medium"
-    | "devto"
-    | "stackoverflow"
-    | "codepen"
-  >;
+  links: SocialLink[] | null;
   variant?: "default" | "glass" | "brutal" | "minimal";
   className?: string;
   iconClassName?: string;
 }
 
-const socialConfig = [
-  { key: "github", icon: Github, label: "GitHub" },
-  { key: "linkedin", icon: Linkedin, label: "LinkedIn" },
-  { key: "twitter", icon: Twitter, label: "Twitter" },
-  { key: "website", icon: Globe, label: "Website" },
-  { key: "dribbble", icon: Dribbble, label: "Dribbble" },
-  { key: "youtube", icon: Youtube, label: "YouTube" },
-  { key: "instagram", icon: Instagram, label: "Instagram" },
-  { key: "medium", icon: BookOpen, label: "Medium" },
-  { key: "devto", icon: Code, label: "Dev.to" },
-  { key: "codepen", icon: Codepen, label: "CodePen" },
-] as const;
+const iconMap: Record<string, LucideIcon> = {
+  github: Github,
+  linkedin: Linkedin,
+  twitter: Twitter,
+  website: Globe,
+  dribbble: Dribbble,
+  behance: Globe,
+  youtube: Youtube,
+  instagram: Instagram,
+  medium: BookOpen,
+  devto: Code,
+  stackoverflow: Code,
+  codepen: Codepen,
+  facebook: Facebook,
+  tiktok: Globe,
+  discord: MessageCircle,
+  telegram: Send,
+  email: Mail,
+  phone: Phone,
+  other: LinkIcon,
+};
 
 export function SocialLinks({
-  data,
+  links,
   variant = "default",
   className,
   iconClassName,
@@ -80,25 +82,20 @@ export function SocialLinks({
 
   const style = variants[variant];
 
-  const links = socialConfig.filter(
-    (social) => data[social.key as keyof typeof data]
-  );
-
-  if (links.length === 0) return null;
+  if (!links || links.length === 0) return null;
 
   return (
     <div className={cn(style.container, className)}>
-      {links.map((social) => {
-        const Icon = social.icon;
-        const url = data[social.key as keyof typeof data];
+      {links.map((link) => {
+        const Icon = iconMap[link.type] || LinkIcon;
         return (
           <a
-            key={social.key}
-            href={url as string}
+            key={link.id}
+            href={link.url}
             target="_blank"
             rel="noopener noreferrer"
             className={style.link}
-            title={social.label}
+            title={link.label || link.type}
           >
             <Icon className={cn(style.icon, iconClassName)} />
           </a>

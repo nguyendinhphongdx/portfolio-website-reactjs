@@ -77,6 +77,7 @@ export default async function PortfolioPage({ params }: PageProps) {
     bio: portfolio.bio,
     avatar: portfolio.avatar,
     coverImage: portfolio.coverImage,
+    cvUrl: portfolio.cvUrl,
 
     // Contact
     email: portfolio.email,
@@ -86,20 +87,6 @@ export default async function PortfolioPage({ params }: PageProps) {
 
     // Social Links (Dynamic)
     socialLinks: portfolio.socialLinks as SocialLink[] | null,
-
-    // Legacy Social Links (for backward compatibility)
-    github: portfolio.github,
-    linkedin: portfolio.linkedin,
-    twitter: portfolio.twitter,
-    website: portfolio.website,
-    dribbble: portfolio.dribbble,
-    behance: portfolio.behance,
-    youtube: portfolio.youtube,
-    instagram: portfolio.instagram,
-    medium: portfolio.medium,
-    devto: portfolio.devto,
-    stackoverflow: portfolio.stackoverflow,
-    codepen: portfolio.codepen,
 
     // Theme & Customization
     template: portfolio.template as TemplateType,

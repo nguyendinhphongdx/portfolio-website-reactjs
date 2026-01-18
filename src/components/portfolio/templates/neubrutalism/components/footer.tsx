@@ -1,36 +1,11 @@
 "use client";
 
-import type { PortfolioData, SocialLink } from "@/types/portfolio";
+import type { PortfolioData } from "@/types/portfolio";
+import { getAllSocialLinks, getSocialLabel } from "../../_shared/utils";
 
 interface FooterProps {
   data: PortfolioData;
   primaryColor: string;
-}
-
-function getAllSocialLinks(data: PortfolioData): SocialLink[] {
-  if (data.socialLinks && data.socialLinks.length > 0) {
-    return data.socialLinks;
-  }
-
-  const links: SocialLink[] = [];
-  if (data.github) links.push({ id: "github", type: "github", url: data.github });
-  if (data.linkedin) links.push({ id: "linkedin", type: "linkedin", url: data.linkedin });
-  if (data.twitter) links.push({ id: "twitter", type: "twitter", url: data.twitter });
-  if (data.website) links.push({ id: "website", type: "website", url: data.website });
-
-  return links;
-}
-
-function getSocialLabel(type: string): string {
-  const labels: Record<string, string> = {
-    github: "GitHub",
-    linkedin: "LinkedIn",
-    twitter: "Twitter",
-    website: "Website",
-    instagram: "Instagram",
-    youtube: "YouTube",
-  };
-  return labels[type] || type.charAt(0).toUpperCase() + type.slice(1);
 }
 
 export function Footer({ data, primaryColor }: FooterProps) {

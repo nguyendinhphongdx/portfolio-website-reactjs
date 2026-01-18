@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { SortableList } from "@/components/ui/sortable-list";
 import type { Project } from "@/types/portfolio";
 
 interface ProjectsEditorProps {
@@ -221,12 +222,13 @@ export function ProjectsEditor({ projects, onChange }: ProjectsEditorProps) {
 
       {/* Projects List */}
       {projects.length > 0 ? (
-        <div className="grid gap-3">
-          {projects.map((project, index) => (
-            <div
-              key={index}
-              className="group relative rounded-xl border bg-card p-4 hover:shadow-md transition-all"
-            >
+        <SortableList
+          items={projects}
+          onReorder={onChange}
+          getItemId={(_, index) => `project-${index}`}
+          className="grid gap-3"
+          renderItem={(project, index) => (
+            <div className="group relative rounded-xl border bg-card p-4 hover:shadow-md transition-all">
               <div className="flex items-start gap-4">
                 {project.image ? (
                   <img
@@ -309,8 +311,8 @@ export function ProjectsEditor({ projects, onChange }: ProjectsEditorProps) {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          )}
+        />
       ) : (
         <div className="rounded-xl border border-dashed p-6 text-center">
           <FolderKanban className="h-8 w-8 mx-auto text-muted-foreground mb-2" />

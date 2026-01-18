@@ -10,29 +10,12 @@ import {
   Youtube,
   MessageCircle,
 } from "lucide-react";
-import type { PortfolioData, SocialLink } from "@/types/portfolio";
+import type { PortfolioData } from "@/types/portfolio";
+import { getAllSocialLinks } from "../../_shared/utils";
 
 interface HeaderProps {
   data: PortfolioData;
   primaryColor: string;
-}
-
-// Helper to get all social links (combining legacy and new format)
-function getAllSocialLinks(data: PortfolioData): SocialLink[] {
-  if (data.socialLinks && data.socialLinks.length > 0) {
-    return data.socialLinks;
-  }
-
-  // Fallback to legacy fields
-  const links: SocialLink[] = [];
-  if (data.github) links.push({ id: "github", type: "github", url: data.github });
-  if (data.linkedin) links.push({ id: "linkedin", type: "linkedin", url: data.linkedin });
-  if (data.twitter) links.push({ id: "twitter", type: "twitter", url: data.twitter });
-  if (data.website) links.push({ id: "website", type: "website", url: data.website });
-  if (data.instagram) links.push({ id: "instagram", type: "instagram", url: data.instagram });
-  if (data.youtube) links.push({ id: "youtube", type: "youtube", url: data.youtube });
-
-  return links;
 }
 
 // Get icon for social link type

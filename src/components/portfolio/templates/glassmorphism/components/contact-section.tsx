@@ -1,25 +1,12 @@
 "use client";
 
 import { Mail, Phone, MapPin, Github, Linkedin, Twitter, Globe } from "lucide-react";
-import type { PortfolioData, SocialLink } from "@/types/portfolio";
+import type { PortfolioData } from "@/types/portfolio";
+import { getAllSocialLinks } from "../../_shared/utils";
 
 interface ContactSectionProps {
   data: PortfolioData;
   primaryColor: string;
-}
-
-function getAllSocialLinks(data: PortfolioData): SocialLink[] {
-  if (data.socialLinks && data.socialLinks.length > 0) {
-    return data.socialLinks;
-  }
-
-  const links: SocialLink[] = [];
-  if (data.github) links.push({ id: "github", type: "github", url: data.github });
-  if (data.linkedin) links.push({ id: "linkedin", type: "linkedin", url: data.linkedin });
-  if (data.twitter) links.push({ id: "twitter", type: "twitter", url: data.twitter });
-  if (data.website) links.push({ id: "website", type: "website", url: data.website });
-
-  return links;
 }
 
 function getSocialIcon(type: string) {

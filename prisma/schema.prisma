@@ -35,6 +35,7 @@ model Portfolio {
   bio           String?   @db.Text
   avatar        String?
   coverImage    String?   // Hero background image
+  cvUrl         String?   // URL to CV/Resume file
 
   // ========== CONTACT ==========
   email         String?
@@ -45,20 +46,6 @@ model Portfolio {
   // ========== SOCIAL LINKS (Dynamic Array) ==========
   // Format: [{ type: "github", url: "...", label?: "..." }, ...]
   socialLinks   Json?
-
-  // Legacy fields (kept for backward compatibility, will be migrated)
-  github        String?
-  linkedin      String?
-  twitter       String?
-  website       String?
-  dribbble      String?
-  behance       String?
-  youtube       String?
-  instagram     String?
-  medium        String?
-  devto         String?
-  stackoverflow String?
-  codepen       String?
 
   // ========== THEME & CUSTOMIZATION ==========
   template      String    @default("minimal")

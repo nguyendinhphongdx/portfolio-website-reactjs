@@ -130,6 +130,7 @@ export interface PortfolioData {
   bio: string | null;
   avatar: string | null;
   coverImage: string | null;
+  cvUrl: string | null;
 
   // ========== CONTACT ==========
   email: string | null;
@@ -139,20 +140,6 @@ export interface PortfolioData {
 
   // ========== SOCIAL LINKS (Dynamic) ==========
   socialLinks: SocialLink[] | null;
-
-  // Legacy fields (for backward compatibility)
-  github: string | null;
-  linkedin: string | null;
-  twitter: string | null;
-  website: string | null;
-  dribbble: string | null;
-  behance: string | null;
-  youtube: string | null;
-  instagram: string | null;
-  medium: string | null;
-  devto: string | null;
-  stackoverflow: string | null;
-  codepen: string | null;
 
   // ========== THEME & CUSTOMIZATION ==========
   template: TemplateType;
