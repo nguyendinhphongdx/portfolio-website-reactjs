@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { PortfolioTemplate } from "@/components/portfolio/templates";
+import { AnalyticsTracker } from "@/components/portfolio/analytics-tracker";
 import type {
   PortfolioData,
   Skill,
@@ -133,5 +134,10 @@ export default async function PortfolioPage({ params }: PageProps) {
     updatedAt: portfolio.updatedAt,
   };
 
-  return <PortfolioTemplate data={portfolioData} />;
+  return (
+    <>
+      <AnalyticsTracker portfolioId={portfolio.id} path={`/${username}`} />
+      <PortfolioTemplate data={portfolioData} />
+    </>
+  );
 }

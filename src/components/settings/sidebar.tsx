@@ -15,6 +15,7 @@ import {
   Sparkles,
   ChevronRight,
   Search,
+  BarChart3,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -57,6 +58,14 @@ const navItems = [
     description: "Search engine optimization",
     gradient: "from-orange-500/20 to-amber-500/20",
     iconColor: "text-orange-600 dark:text-orange-400",
+  },
+  {
+    title: "Analytics",
+    href: "/settings/analytics",
+    icon: BarChart3,
+    description: "View traffic & statistics",
+    gradient: "from-emerald-500/20 to-green-500/20",
+    iconColor: "text-emerald-600 dark:text-emerald-400",
   },
   {
     title: "LLM Config",

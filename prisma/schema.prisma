@@ -28,6 +28,9 @@ model Portfolio {
   userId        String    @unique
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  // Analytics relation
+  pageViews     PageView[]
+
   // ========== PERSONAL INFO ==========
   fullName      String?
   title         String?   // e.g., "Senior Frontend Developer"
@@ -42,6 +45,20 @@ model Portfolio {
   phone         String?
   location      String?
   timezone      String?   // e.g., "Asia/Ho_Chi_Minh"
+
+  // ========== SOCIAL LINKS (Legacy - keep for backward compatibility) ==========
+  github        String?
+  linkedin      String?
+  twitter       String?
+  website       String?
+  dribbble      String?
+  behance       String?
+  youtube       String?
+  instagram     String?
+  medium        String?
+  devto         String?
+  stackoverflow String?
+  codepen       String?
 
   // ========== SOCIAL LINKS (Dynamic Array) ==========
   // Format: [{ type: "github", url: "...", label?: "..." }, ...]
@@ -106,4 +123,62 @@ model LLMConfig {
   updatedAt     DateTime  @updatedAt
 
   @@unique([userId, provider])
+}
+
+// ========== ANALYTICS ==========
+model PageView {
+  id            String    @id @default(cuid())
+  portfolioId   String
+  portfolio     Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  // Visitor info
+  visitorId     String?   // Anonymous visitor ID (from cookie/fingerprint)
+  sessionId     String?   // Session tracking
+
+  // Request info
+  path          String    // e.g., "/johndoe" or "/johndoe/projects"
+  referrer      String?   // Where they came from
+  userAgent     String?   @db.Text
+
+  // Geo info (from IP)
+  country       String?
+  city          String?
+  region        String?
+
+  // Device info
+  device        String?   // "desktop", "mobile", "tablet"
+  browser       String?   // "Chrome", "Safari", "Firefox"
+  os            String?   // "Windows", "macOS", "iOS", "Android"
+
+  // Timing
+  duration      Int?      // Time spent on page in seconds
+
+  createdAt     DateTime  @default(now())
+
+  @@index([portfolioId])
+  @@index([createdAt])
+  @@index([visitorId])
+}
+
+// Aggregated daily stats for faster queries
+model DailyStats {
+  id            String    @id @default(cuid())
+  portfolioId   String
+  date          DateTime  @db.Date
+
+  // Counts
+  views         Int       @default(0)
+  uniqueVisitors Int      @default(0)
+
+  // Top sources
+  topReferrers  Json?     // [{ referrer: "google.com", count: 10 }, ...]
+  topCountries  Json?     // [{ country: "US", count: 50 }, ...]
+  topDevices    Json?     // [{ device: "mobile", count: 30 }, ...]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([portfolioId, date])
+  @@index([portfolioId])
+  @@index([date])
 }
