@@ -1070,11 +1070,11 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
               </div>
 
               {/* Timeline */}
-              <div className="relative">
+              <div className="relative pl-6 md:pl-0">
                 {/* Timeline line */}
-                <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-purple-500/50 via-blue-500/50 to-transparent md:-translate-x-1/2" />
+                <div className="absolute left-[7px] md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-purple-500/50 via-blue-500/50 to-transparent md:-translate-x-1/2" />
 
-                <div className="space-y-12">
+                <div className="space-y-8 md:space-y-12">
                   {experience.map((exp, index) => {
                     const isEven = index % 2 === 0;
                     const colors = ["#A855F7", "#3B82F6", "#F97316", "#10B981", "#EC4899"];
@@ -1083,11 +1083,11 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
                     return (
                       <div
                         key={index}
-                        className={`relative flex flex-col md:flex-row gap-8 ${isEven ? "md:flex-row" : "md:flex-row-reverse"}`}
+                        className={`relative flex flex-col md:flex-row gap-4 md:gap-8 ${isEven ? "md:flex-row" : "md:flex-row-reverse"}`}
                       >
                         {/* Timeline dot */}
-                        <div className="absolute left-0 md:left-1/2 w-4 h-4 rounded-full border-2 border-white/30 bg-[#11071F] md:-translate-x-1/2 z-10">
-                          <div className="absolute inset-1 rounded-full" style={{ background: accentColor }} />
+                        <div className="absolute -left-6 md:left-1/2 top-0 w-3.5 h-3.5 md:w-4 md:h-4 rounded-full border-2 border-white/30 bg-[#11071F] md:-translate-x-1/2 z-10">
+                          <div className="absolute inset-0.5 md:inset-1 rounded-full" style={{ background: accentColor }} />
                         </div>
 
                         {/* Date - Mobile: inline, Desktop: separate column */}
@@ -1108,7 +1108,7 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
                         </div>
 
                         {/* Content Card */}
-                        <div className={`md:w-1/2 ${isEven ? "md:pl-12" : "md:pr-12"} pl-8 md:pl-0`}>
+                        <div className={`md:w-1/2 ${isEven ? "md:pl-12" : "md:pr-12"}`}>
                           <div className="group glass-card rounded-2xl p-6 hover:border-white/20 transition-all duration-300 relative overflow-hidden">
                             {/* Hover glow */}
                             <div
