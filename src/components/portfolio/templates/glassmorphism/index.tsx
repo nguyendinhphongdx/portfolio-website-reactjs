@@ -4,6 +4,7 @@ import type { PortfolioData } from "@/types/portfolio";
 import Image from "next/image";
 import { useState, useEffect, type ReactNode } from "react";
 import { getAllSocialLinks } from "../_shared/utils";
+import { AnimateOnScroll, StaggerContainer } from "@/components/ui/animate-on-scroll";
 
 interface GlassmorphismTemplateProps {
   data: PortfolioData;
@@ -1083,10 +1084,12 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
           {/* Work Experience Section - Timeline Style */}
           {data.showExperience !== false && experience.length > 0 && (
             <section id="experience" className="mb-32">
-              <div className="flex items-center gap-4 mb-12">
-                <h2 className="text-sm font-medium text-white/50 tracking-[0.3em] uppercase">Work Experience</h2>
-                <div className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" />
-              </div>
+              <AnimateOnScroll animation="fade-up" duration={600}>
+                <div className="flex items-center gap-4 mb-12">
+                  <h2 className="text-sm font-medium text-white/50 tracking-[0.3em] uppercase">Work Experience</h2>
+                  <div className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" />
+                </div>
+              </AnimateOnScroll>
 
               {/* Timeline */}
               <div className="relative pl-6 md:pl-0">
@@ -1100,11 +1103,16 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
                     const accentColor = colors[index % colors.length];
 
                     return (
-                      <div
+                      <AnimateOnScroll
                         key={index}
-                        className={`relative flex flex-col md:flex-row gap-4 md:gap-8 ${isEven ? "md:flex-row" : "md:flex-row-reverse"}`}
+                        animation={isEven ? "fade-left" : "fade-right"}
+                        delay={index * 150}
+                        duration={700}
                       >
-                        {/* Timeline dot */}
+                        <div
+                          className={`relative flex flex-col md:flex-row gap-4 md:gap-8 ${isEven ? "md:flex-row" : "md:flex-row-reverse"}`}
+                        >
+                          {/* Timeline dot */}
                         <div className="absolute -left-6 md:left-1/2 top-0 w-3.5 h-3.5 md:w-4 md:h-4 rounded-full border-2 border-white/30 bg-[#11071F] md:-translate-x-1/2 z-10">
                           <div className="absolute inset-0.5 md:inset-1 rounded-full" style={{ background: accentColor }} />
                         </div>
@@ -1191,6 +1199,7 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
                           </div>
                         </div>
                       </div>
+                    </AnimateOnScroll>
                     );
                   })}
                 </div>
@@ -1201,27 +1210,36 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
           {/* Skills Section */}
           {data.showSkills !== false && skills.length > 0 && (
             <section id="skills" className="mb-32">
-              <div className="flex items-center gap-4 mb-8">
-                <h2 className="text-sm font-medium text-white/50 tracking-[0.3em] uppercase">Technologies</h2>
-                <div className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" />
-              </div>
+              <AnimateOnScroll animation="fade-up" duration={600}>
+                <div className="flex items-center gap-4 mb-8">
+                  <h2 className="text-sm font-medium text-white/50 tracking-[0.3em] uppercase">Technologies</h2>
+                  <div className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" />
+                </div>
+              </AnimateOnScroll>
 
               {/* Skills Grid - Compact */}
-              <div className="flex flex-wrap gap-2 justify-center">
+              <StaggerContainer
+                className="flex flex-wrap gap-2 justify-center"
+                animation="zoom-in"
+                staggerDelay={50}
+                duration={400}
+              >
                 {skills.map((skill, index) => (
                   <SkillCard key={index} name={skill.name} primaryColor={primaryColor} />
                 ))}
-              </div>
+              </StaggerContainer>
             </section>
           )}
 
           {/* Featured Projects Section - Showcase Layout */}
           {data.showProjects !== false && projects.length > 0 && (
             <section id="projects" className="mb-32">
-              <div className="flex items-center gap-4 mb-12">
-                <h2 className="text-sm font-medium text-white/50 tracking-[0.3em] uppercase">Featured Projects</h2>
-                <div className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" />
-              </div>
+              <AnimateOnScroll animation="fade-up" duration={600}>
+                <div className="flex items-center gap-4 mb-12">
+                  <h2 className="text-sm font-medium text-white/50 tracking-[0.3em] uppercase">Featured Projects</h2>
+                  <div className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" />
+                </div>
+              </AnimateOnScroll>
 
               <div className="space-y-16">
                 {projects.map((project, index) => {
@@ -1230,10 +1248,15 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
                   const isEven = index % 2 === 0;
 
                   return (
-                    <div
+                    <AnimateOnScroll
                       key={index}
-                      className={`group grid lg:grid-cols-2 gap-8 items-start ${!isEven ? "lg:direction-rtl" : ""}`}
+                      animation={isEven ? "fade-right" : "fade-left"}
+                      delay={index * 100}
+                      duration={700}
                     >
+                      <div
+                        className={`group grid lg:grid-cols-2 gap-8 items-start ${!isEven ? "lg:direction-rtl" : ""}`}
+                      >
                       {/* Project Image */}
                       <div className={`relative ${!isEven ? "lg:order-2" : ""}`}>
                         <div className="relative rounded-2xl overflow-hidden border border-white/10 group-hover:border-white/20 transition-all duration-500">
@@ -1362,6 +1385,7 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
                         </div>
                       </div>
                     </div>
+                  </AnimateOnScroll>
                   );
                 })}
               </div>
@@ -1371,14 +1395,17 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
           {/* Testimonials */}
           {data.showTestimonials !== false && testimonials.length > 0 && (
             <section className="mb-32">
-              <div className="flex items-center gap-4 mb-12">
-                <h2 className="text-sm font-medium text-white/50 tracking-[0.3em] uppercase">What People Say</h2>
-                <div className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" />
-              </div>
+              <AnimateOnScroll animation="fade-up" duration={600}>
+                <div className="flex items-center gap-4 mb-12">
+                  <h2 className="text-sm font-medium text-white/50 tracking-[0.3em] uppercase">What People Say</h2>
+                  <div className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" />
+                </div>
+              </AnimateOnScroll>
 
               <div className="grid md:grid-cols-2 gap-8">
                 {testimonials.map((testimonial, index) => (
-                  <div key={index} className="rounded-[24px] glass-card p-8 relative overflow-hidden">
+                  <AnimateOnScroll key={index} animation="fade-up" delay={index * 150} duration={600}>
+                    <div className="rounded-[24px] glass-card p-8 relative overflow-hidden h-full">
                     <div className="absolute top-4 right-6 text-6xl opacity-10" style={{ color: primaryColor }}>&ldquo;</div>
                     <div className="flex items-start gap-4 mb-6">
                       {testimonial.avatar ? (
@@ -1396,6 +1423,7 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
                     </div>
                     <p className="text-white/60 italic leading-relaxed">{testimonial.content}</p>
                   </div>
+                  </AnimateOnScroll>
                 ))}
               </div>
             </section>
@@ -1449,14 +1477,17 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
 
           {/* Contact Section - Redesigned */}
           <section id="contact" className="mb-20">
-            <div className="flex items-center gap-4 mb-12">
-              <h2 className="text-sm font-medium text-white/50 tracking-[0.3em] uppercase">Get In Touch</h2>
-              <div className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" />
-            </div>
+            <AnimateOnScroll animation="fade-up" duration={600}>
+              <div className="flex items-center gap-4 mb-12">
+                <h2 className="text-sm font-medium text-white/50 tracking-[0.3em] uppercase">Get In Touch</h2>
+                <div className="flex-1 h-px bg-gradient-to-r from-white/20 to-transparent" />
+              </div>
+            </AnimateOnScroll>
 
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left - CTA */}
-              <div className="space-y-6">
+              <AnimateOnScroll animation="fade-right" delay={200} duration={700}>
+                <div className="space-y-6">
                 <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   Let&apos;s work<br />
                   <span className="text-gradient">together.</span>
@@ -1553,9 +1584,11 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
                   </div>
                 )}
               </div>
+              </AnimateOnScroll>
 
               {/* Right - Social Links Card */}
-              <div className="glass-card rounded-3xl p-8 relative overflow-hidden">
+              <AnimateOnScroll animation="fade-left" delay={300} duration={700}>
+                <div className="glass-card rounded-3xl p-8 relative overflow-hidden">
                 {/* Decorative gradient */}
                 <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-30" style={{ background: primaryColor }} />
                 <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full blur-2xl opacity-20" style={{ background: "#3B82F6" }} />
@@ -1594,6 +1627,7 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
                   </div>
                 </div>
               </div>
+              </AnimateOnScroll>
             </div>
           </section>
         </div>
