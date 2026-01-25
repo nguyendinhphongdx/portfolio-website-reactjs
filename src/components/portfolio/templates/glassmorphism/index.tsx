@@ -752,17 +752,17 @@ export function GlassmorphismTemplate({ data }: GlassmorphismTemplateProps) {
 
                 {/* Current Position with decorative arrow */}
                 {experience.length > 0 && experience[0] && (
-                  <div className="flex items-center gap-4 pt-4">
-                    <span className="text-white/60">Currently, I&apos;m a {experience[0].position} at</span>
-                    <div className="relative">
+                  <div className="flex flex-wrap items-center gap-2 md:gap-4 pt-4">
+                    <span className="text-white/60 text-sm md:text-base">Currently, I&apos;m a {experience[0].position} at</span>
+                    <div className="relative inline-block">
                       <span
-                        className="px-4 py-2 rounded-xl font-semibold text-white"
+                        className="px-3 py-1.5 md:px-4 md:py-2 rounded-xl font-semibold text-white text-sm md:text-base inline-block"
                         style={{ background: `linear-gradient(135deg, ${primaryColor}40, ${primaryColor}20)`, border: `1px solid ${primaryColor}40` }}
                       >
                         {experience[0].company}
                       </span>
-                      {/* Decorative arrow */}
-                      <svg className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-16 h-8 text-white/20" viewBox="0 0 79 48" fill="none">
+                      {/* Decorative arrow - hidden on mobile */}
+                      <svg className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-16 h-8 text-white/20 hidden md:block" viewBox="0 0 79 48" fill="none">
                         <path fillRule="evenodd" clipRule="evenodd" d="M0.254343 47.5463C0.254343 47.5463 0.254258 47.5465 0.385594 47.6201C0.457254 47.7525 0.457348 47.7525 0.457348 47.7525L0.46472 47.7485L0.487292 47.7364L0.576182 47.6889C0.654365 47.6473 0.769695 47.5862 0.918003 47.5088C1.21463 47.3538 1.64313 47.1331 2.17017 46.8701C3.22441 46.3441 4.67219 45.6496 6.24702 44.9753C7.82241 44.3007 9.52197 43.6475 11.0804 43.2029C12.6445 42.7568 14.0453 42.5272 15.0328 42.6816L15.0793 42.384C14.0227 42.2189 12.5677 42.4655 10.9978 42.9133C9.42223 43.3628 7.70969 44.0213 6.12848 44.6984C4.54672 45.3758 3.09342 46.0729 2.03573 46.6006C1.50681 46.8645 1.07663 47.0861 0.778569 47.2418C0.77174 47.2454 0.764982 47.2489 0.758293 47.2524C0.803533 47.1686 0.854445 47.0736 0.910432 46.9684C1.15561 46.5076 1.49819 45.8496 1.88807 45.0603C2.66753 43.4822 3.63738 41.3766 4.39579 39.2712C5.15234 37.171 5.70596 35.0514 5.63718 33.4527C5.60274 32.6523 5.41157 31.962 4.99096 31.4724C4.56565 30.9773 3.92594 30.7105 3.04741 30.7191L3.05033 31.0202C3.86306 31.0123 4.40858 31.2566 4.76253 31.6686C5.12118 32.0861 5.30332 32.6987 5.33631 33.4656C5.40239 35.0014 4.86737 37.0735 4.11247 39.1692C3.35943 41.2596 2.39501 43.354 1.61807 44.9269C1.22975 45.7131 0.888587 46.3683 0.644579 46.8269C0.522582 47.0562 0.424887 47.2363 0.357746 47.359C0.324176 47.4203 0.298246 47.4673 0.280738 47.4989L0.260888 47.5346L0.254343 47.5463ZM0.385594 47.6201L0.457348 47.7525L0 48L0.254343 47.5463L0.385594 47.6201Z" fill="currentColor"/>
                         <path fillRule="evenodd" clipRule="evenodd" d="M38.7939 11.1242C25.8614 18.0945 14.3196 27.8886 7.34227 39.1827L7.59847 39.3409C14.5411 28.1031 26.0375 18.3416 38.9368 11.3893C51.8361 4.43691 66.1245 0.301143 78.6418 0.301143V0C66.0638 -5.72127e-07 51.7265 4.15389 38.7939 11.1242Z" fill="currentColor"/>
                       </svg>
