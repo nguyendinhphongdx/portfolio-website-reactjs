@@ -38,9 +38,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { TEMPLATES, type TemplateType, type PortfolioData } from "@/types/portfolio";
+import { TEMPLATES, type TemplateType, type PortfolioData, getTemplateSettingsConfig } from "@/types/portfolio";
 import { cn } from "@/lib/utils";
 import { LivePreview } from "./live-preview";
+import { TemplateSettingsEditor } from "./template-settings-editor";
 
 interface TemplatePreviewProps {
   type: TemplateType;
@@ -231,6 +232,7 @@ const defaultPortfolioData: PortfolioData = {
     { id: "4", type: "website", url: "https://johndoe.dev" },
   ],
   template: "minimal",
+  templateSettings: null,
   primaryColor: "#3b82f6",
   secondaryColor: null,
   accentColor: null,
@@ -347,6 +349,7 @@ export function TemplateSelector() {
   const [darkMode, setDarkMode] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
   const [username, setUsername] = useState<string>("");
+  const [templateSettings, setTemplateSettings] = useState<Record<string, unknown> | null>(null);
 
   // Section visibility
   const [showSkills, setShowSkills] = useState(true);
@@ -376,6 +379,7 @@ export function TemplateSelector() {
           setShowEducation(data.showEducation ?? true);
           setShowCertifications(data.showCertifications ?? true);
           setShowTestimonials(data.showTestimonials ?? true);
+          setTemplateSettings(data.templateSettings || null);
         }
       } catch (error) {
         console.error("Failed to fetch portfolio:", error);
@@ -387,10 +391,14 @@ export function TemplateSelector() {
     fetchPortfolio();
   }, []);
 
+  // Check if current template has custom settings
+  const hasTemplateSettings = getTemplateSettingsConfig(selectedTemplate).length > 0;
+
   // Preview data that updates in real-time
   const previewData = useMemo<PortfolioData>(() => ({
     ...portfolioData,
     template: selectedTemplate,
+    templateSettings,
     primaryColor,
     secondaryColor,
     fontFamily,
@@ -404,6 +412,7 @@ export function TemplateSelector() {
   }), [
     portfolioData,
     selectedTemplate,
+    templateSettings,
     primaryColor,
     secondaryColor,
     fontFamily,
@@ -424,6 +433,7 @@ export function TemplateSelector() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           template: selectedTemplate,
+          templateSettings,
           primaryColor,
           secondaryColor,
           fontFamily,
@@ -498,6 +508,15 @@ export function TemplateSelector() {
           Preview Template
         </Button>
       </div>
+
+      {/* Template-Specific Settings */}
+      {hasTemplateSettings && (
+        <TemplateSettingsEditor
+          template={selectedTemplate}
+          settings={templateSettings}
+          onChange={setTemplateSettings}
+        />
+      )}
 
       {/* Theme Customization */}
       <div className="space-y-4">

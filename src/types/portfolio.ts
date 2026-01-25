@@ -171,6 +171,11 @@ export interface PortfolioData {
   languages: Language[] | null;
   interests: string[] | null;
 
+  // ========== TEMPLATE-SPECIFIC SETTINGS ==========
+  // Flexible JSON object to store template-specific settings
+  // Each template can define its own fields
+  templateSettings: Record<string, unknown> | null;
+
   // ========== SEO & ANALYTICS ==========
   seoTitle: string | null;
   seoDescription: string | null;
@@ -198,6 +203,170 @@ export interface TemplateConfig {
   name: string;
   description: string;
   preview: string;
+}
+
+// Template-specific field configuration
+export interface TemplateFieldConfig {
+  key: string;
+  label: string;
+  type: "text" | "number" | "textarea" | "select" | "boolean";
+  placeholder?: string;
+  description?: string;
+  options?: { value: string; label: string }[]; // For select type
+  defaultValue?: string | number | boolean;
+}
+
+export interface TemplateSettingsConfig {
+  templateId: TemplateType;
+  fields: TemplateFieldConfig[];
+}
+
+// Define fields for each template
+export const TEMPLATE_SETTINGS_CONFIG: TemplateSettingsConfig[] = [
+  {
+    templateId: "glassmorphism",
+    fields: [
+      {
+        key: "yearsExperience",
+        label: "Years of Experience",
+        type: "number",
+        placeholder: "e.g., 5",
+        description: "Override auto-calculated years (leave empty to auto-calculate)",
+      },
+      {
+        key: "skillsCount",
+        label: "Skills Count",
+        type: "number",
+        placeholder: "e.g., 20",
+        description: "Override skills count (leave empty to use actual count)",
+      },
+      {
+        key: "projectsCount",
+        label: "Projects Count",
+        type: "number",
+        placeholder: "e.g., 10",
+        description: "Override projects count (leave empty to use actual count)",
+      },
+      {
+        key: "showStatsWidgets",
+        label: "Show Stats Widgets",
+        type: "boolean",
+        description: "Show floating stats widgets around avatar",
+        defaultValue: true,
+      },
+      {
+        key: "heroStyle",
+        label: "Hero Section Style",
+        type: "select",
+        options: [
+          { value: "default", label: "Default (with particles)" },
+          { value: "minimal", label: "Minimal (clean)" },
+          { value: "animated", label: "Animated (more effects)" },
+        ],
+        defaultValue: "default",
+      },
+    ],
+  },
+  {
+    templateId: "bento",
+    fields: [
+      {
+        key: "gridStyle",
+        label: "Grid Layout Style",
+        type: "select",
+        options: [
+          { value: "default", label: "Default" },
+          { value: "compact", label: "Compact" },
+          { value: "spacious", label: "Spacious" },
+        ],
+        defaultValue: "default",
+      },
+      {
+        key: "showQuote",
+        label: "Show Quote Card",
+        type: "boolean",
+        description: "Display a quote/motto card in the grid",
+        defaultValue: true,
+      },
+      {
+        key: "quoteText",
+        label: "Quote Text",
+        type: "textarea",
+        placeholder: "Your favorite quote or motto...",
+      },
+    ],
+  },
+  {
+    templateId: "minimal",
+    fields: [
+      {
+        key: "accentStyle",
+        label: "Accent Style",
+        type: "select",
+        options: [
+          { value: "underline", label: "Underline" },
+          { value: "highlight", label: "Highlight" },
+          { value: "none", label: "None" },
+        ],
+        defaultValue: "underline",
+      },
+    ],
+  },
+  {
+    templateId: "modern",
+    fields: [
+      {
+        key: "gradientIntensity",
+        label: "Gradient Intensity",
+        type: "select",
+        options: [
+          { value: "subtle", label: "Subtle" },
+          { value: "medium", label: "Medium" },
+          { value: "vibrant", label: "Vibrant" },
+        ],
+        defaultValue: "medium",
+      },
+      {
+        key: "enableGlow",
+        label: "Enable Glow Effects",
+        type: "boolean",
+        defaultValue: true,
+      },
+    ],
+  },
+  {
+    templateId: "neubrutalism",
+    fields: [
+      {
+        key: "shadowOffset",
+        label: "Shadow Style",
+        type: "select",
+        options: [
+          { value: "small", label: "Small (4px)" },
+          { value: "medium", label: "Medium (8px)" },
+          { value: "large", label: "Large (12px)" },
+        ],
+        defaultValue: "medium",
+      },
+      {
+        key: "borderWidth",
+        label: "Border Width",
+        type: "select",
+        options: [
+          { value: "thin", label: "Thin (2px)" },
+          { value: "medium", label: "Medium (3px)" },
+          { value: "thick", label: "Thick (4px)" },
+        ],
+        defaultValue: "medium",
+      },
+    ],
+  },
+];
+
+// Helper to get settings config for a template
+export function getTemplateSettingsConfig(templateId: TemplateType): TemplateFieldConfig[] {
+  const config = TEMPLATE_SETTINGS_CONFIG.find((c) => c.templateId === templateId);
+  return config?.fields || [];
 }
 
 export const TEMPLATES: TemplateConfig[] = [

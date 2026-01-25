@@ -65,12 +65,13 @@ model Portfolio {
   socialLinks   Json?
 
   // ========== THEME & CUSTOMIZATION ==========
-  template      String    @default("minimal")
-  primaryColor  String    @default("#3b82f6")
-  secondaryColor String?
-  accentColor   String?
-  fontFamily    String?   // "inter", "poppins", "roboto", etc.
-  darkMode      Boolean   @default(false)
+  template         String    @default("minimal")
+  templateSettings Json?     // Template-specific settings (JSON object)
+  primaryColor     String    @default("#3b82f6")
+  secondaryColor   String?
+  accentColor      String?
+  fontFamily       String?   // "inter", "poppins", "roboto", etc.
+  darkMode         Boolean   @default(false)
 
   // ========== SECTION VISIBILITY ==========
   showSkills       Boolean @default(true)

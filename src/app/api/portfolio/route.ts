@@ -25,6 +25,7 @@ const portfolioUpdateSchema = z.object({
     "designer", "photographer", "executive",
     "glassmorphism", "neubrutalism", "bento"
   ]).optional(),
+  templateSettings: z.record(z.string(), z.unknown()).optional().nullable(),
   primaryColor: z.string().optional(),
   secondaryColor: z.string().optional().nullable(),
   accentColor: z.string().optional().nullable(),
@@ -121,8 +122,10 @@ export async function PUT(request: NextRequest) {
     const data = portfolioUpdateSchema.parse(body);
 
     // Handle null values for JSON fields
-    const sanitizedData = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const sanitizedData: any = {
       ...data,
+      templateSettings: data.templateSettings === null ? undefined : data.templateSettings,
       socialLinks: data.socialLinks === null ? undefined : data.socialLinks,
       skills: data.skills === null ? undefined : data.skills,
       experience: data.experience === null ? undefined : data.experience,

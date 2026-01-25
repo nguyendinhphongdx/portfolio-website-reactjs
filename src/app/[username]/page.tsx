@@ -91,6 +91,7 @@ export default async function PortfolioPage({ params }: PageProps) {
 
     // Theme & Customization
     template: portfolio.template as TemplateType,
+    templateSettings: portfolio.templateSettings as Record<string, unknown> | null,
     primaryColor: portfolio.primaryColor,
     secondaryColor: portfolio.secondaryColor,
     accentColor: portfolio.accentColor,
