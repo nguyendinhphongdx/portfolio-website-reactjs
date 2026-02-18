@@ -10,6 +10,7 @@ import {
   Shield,
   Globe,
 } from "lucide-react";
+import { UserSearch } from "@/components/user-search";
 
 const features = [
   {
@@ -136,6 +137,12 @@ export default function HomePage() {
                 </div>
               )
             )}
+          </div>
+
+          {/* Portfolio Search */}
+          <div className="mt-14">
+            <p className="text-sm text-muted-foreground mb-3">Find a portfolio</p>
+            <UserSearch />
           </div>
         </div>
       </section>
