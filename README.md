@@ -165,5 +165,3 @@ npm run lint      # Lint code
 | `NEXTAUTH_URL` | App URL (http://localhost:3000) |
 
 ## License
-
-MIT
