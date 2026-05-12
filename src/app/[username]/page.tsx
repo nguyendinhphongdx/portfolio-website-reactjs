@@ -1,4 +1,7 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
+import Script from "next/script";
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { PortfolioTemplate } from "@/components/portfolio/templates";
 import { AnalyticsTracker } from "@/components/portfolio/analytics-tracker";
@@ -21,7 +24,12 @@ interface PageProps {
   params: Promise<{ username: string }>;
 }
 
-async function getPortfolioByUsername(username: string) {
+const getSiteUrl = () =>
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  process.env.NEXTAUTH_URL?.replace(/\/$/, "") ||
+  "http://localhost:5444";
+
+const getPortfolioByUsername = cache(async (username: string) => {
   try {
     const user = await prisma.user.findUnique({
       where: { username },
@@ -39,23 +47,54 @@ async function getPortfolioByUsername(username: string) {
     console.error("Failed to fetch portfolio:", error);
     return null;
   }
-}
+});
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { username } = await params;
   const portfolio = await getPortfolioByUsername(username);
 
   if (!portfolio) {
     return {
       title: "Portfolio Not Found",
+      robots: { index: false, follow: false },
     };
   }
 
+  const displayName = portfolio.fullName || `@${username}`;
+  const fallbackTitle = portfolio.title
+    ? `${displayName} — ${portfolio.title}`
+    : displayName;
+  const title = portfolio.seoTitle || fallbackTitle;
+  const description =
+    portfolio.seoDescription ||
+    portfolio.bio ||
+    portfolio.tagline ||
+    `${displayName}'s professional portfolio`;
+
+  const url = `${getSiteUrl()}/${username}`;
+  const image = portfolio.ogImage || portfolio.coverImage || portfolio.avatar;
+
   return {
-    title: portfolio.fullName
-      ? `${portfolio.fullName} | Portfolio`
-      : `@${username} | Portfolio`,
-    description: portfolio.bio || `${portfolio.fullName}'s professional portfolio`,
+    title,
+    description,
+    alternates: { canonical: url },
+    robots: { index: true, follow: true },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "profile",
+      siteName: "Portfolio Builder",
+      images: image
+        ? [{ url: image, width: 1200, height: 630, alt: displayName }]
+        : [],
+    },
+    twitter: {
+      card: image ? "summary_large_image" : "summary",
+      title,
+      description,
+      images: image ? [image] : [],
+    },
   };
 }
 
@@ -135,8 +174,54 @@ export default async function PortfolioPage({ params }: PageProps) {
     updatedAt: portfolio.updatedAt,
   };
 
+  const siteUrl = getSiteUrl();
+  const portfolioUrl = `${siteUrl}/${username}`;
+  const socialLinks = (portfolio.socialLinks as SocialLink[] | null) ?? [];
+  const experienceList = (portfolio.experience as Experience[] | null) ?? [];
+  const currentJob = experienceList.find((e) => e?.current) ?? experienceList[0];
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: portfolio.fullName || username,
+    ...(portfolio.title && { jobTitle: portfolio.title }),
+    ...(portfolio.bio && { description: portfolio.bio }),
+    ...(portfolio.avatar && { image: portfolio.avatar }),
+    ...(portfolio.email && { email: portfolio.email }),
+    ...(portfolio.phone && { telephone: portfolio.phone }),
+    ...(portfolio.location && {
+      address: { "@type": "PostalAddress", addressLocality: portfolio.location },
+    }),
+    url: portfolioUrl,
+    ...(socialLinks.length > 0 && {
+      sameAs: socialLinks.map((s) => s.url).filter(Boolean),
+    }),
+    ...(currentJob?.company && {
+      worksFor: { "@type": "Organization", name: currentJob.company },
+    }),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      {portfolio.googleAnalyticsId && (
+        <>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${portfolio.googleAnalyticsId}`}
+            strategy="afterInteractive"
+          />
+          <Script id="ga-init" strategy="afterInteractive">
+            {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${portfolio.googleAnalyticsId}');`}
+          </Script>
+        </>
+      )}
       <AnalyticsTracker portfolioId={portfolio.id} path={`/${username}`} />
       <PortfolioTemplate data={portfolioData} />
     </>
