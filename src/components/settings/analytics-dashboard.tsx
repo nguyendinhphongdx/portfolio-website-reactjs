@@ -15,6 +15,9 @@ import {
   Eye,
   MapPin,
   Chrome,
+  ChevronLeft,
+  ChevronRight,
+  Link2,
 } from "lucide-react";
 import {
   Select,
@@ -40,12 +43,29 @@ interface AnalyticsData {
     path: string;
     country: string | null;
     city: string | null;
+    region: string | null;
     device: string | null;
     browser: string | null;
+    os: string | null;
     referrer: string | null;
     duration: number | null;
     createdAt: string;
   }[];
+  recentViewsTotal: number;
+  recentViewsPage: number;
+  recentViewsPageSize: number;
+}
+
+const RECENT_PAGE_SIZE = 10;
+
+function formatReferrerDomain(referrer: string | null): string {
+  if (!referrer) return "Direct";
+  try {
+    const url = new URL(referrer);
+    return url.hostname.replace(/^www\./, "");
+  } catch {
+    return referrer;
+  }
 }
 
 const deviceIcons: Record<string, React.ElementType> = {
@@ -121,12 +141,15 @@ export function AnalyticsDashboard() {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [period, setPeriod] = useState("7d");
+  const [recentPage, setRecentPage] = useState(1);
 
   useEffect(() => {
     async function fetchAnalytics() {
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/analytics?period=${period}`);
+        const response = await fetch(
+          `/api/analytics?period=${period}&recentPage=${recentPage}&recentPageSize=${RECENT_PAGE_SIZE}`
+        );
         if (response.ok) {
           const result = await response.json();
           setData(result);
@@ -139,9 +162,14 @@ export function AnalyticsDashboard() {
     }
 
     fetchAnalytics();
-  }, [period]);
+  }, [period, recentPage]);
 
-  if (isLoading) {
+  const handlePeriodChange = (newPeriod: string) => {
+    setPeriod(newPeriod);
+    setRecentPage(1);
+  };
+
+  if (isLoading && !data) {
     return (
       <div className="flex flex-col items-center justify-center py-16 gap-3">
         <div className="relative">
@@ -179,7 +207,7 @@ export function AnalyticsDashboard() {
             </p>
           </div>
         </div>
-        <Select value={period} onValueChange={setPeriod}>
+        <Select value={period} onValueChange={handlePeriodChange}>
           <SelectTrigger className="w-[120px] h-8 text-[12px]">
             <SelectValue />
           </SelectTrigger>
@@ -353,53 +381,128 @@ export function AnalyticsDashboard() {
 
       {/* Recent Views */}
       <div className="rounded-xl border bg-card p-4">
-        <div className="flex items-center gap-2 mb-4">
-          <Clock className="h-4 w-4 text-muted-foreground" />
-          <h4 className="text-[13px] font-medium">Lượt xem gần đây</h4>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Clock className="h-4 w-4 text-muted-foreground" />
+            <h4 className="text-[13px] font-medium">Lượt xem gần đây</h4>
+            {data.recentViewsTotal > 0 && (
+              <span className="text-[11px] text-muted-foreground">
+                ({data.recentViewsTotal})
+              </span>
+            )}
+          </div>
+          {isLoading && (
+            <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
+          )}
         </div>
         {data.recentViews.length > 0 ? (
-          <div className="space-y-3">
-            {data.recentViews.map((view) => (
-              <div
-                key={view.id}
-                className="flex items-center justify-between text-[12px] py-2 border-b last:border-0"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
-                    {view.device === "mobile" ? (
-                      <Smartphone className="h-4 w-4 text-muted-foreground" />
-                    ) : view.device === "tablet" ? (
-                      <Tablet className="h-4 w-4 text-muted-foreground" />
-                    ) : (
-                      <Monitor className="h-4 w-4 text-muted-foreground" />
-                    )}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      {view.country && (
-                        <span className="flex items-center gap-1">
-                          <MapPin className="h-3 w-3" />
-                          {view.city ? `${view.city}, ` : ""}
-                          {view.country}
-                        </span>
+          <>
+            <div className="space-y-3">
+              {data.recentViews.map((view) => {
+                const DeviceIcon =
+                  deviceIcons[view.device || ""] || Monitor;
+                const locationParts = [view.city, view.region, view.country]
+                  .filter(Boolean)
+                  .join(", ");
+                const techParts = [view.browser, view.os]
+                  .filter(Boolean)
+                  .join(" • ");
+                return (
+                  <div
+                    key={view.id}
+                    className="flex items-start justify-between gap-3 text-[12px] py-2 border-b last:border-0"
+                  >
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                        <DeviceIcon className="h-4 w-4 text-muted-foreground" />
+                      </div>
+                      <div className="flex-1 min-w-0 space-y-0.5">
+                        <div
+                          className="font-medium truncate"
+                          title={view.path}
+                        >
+                          {view.path}
+                        </div>
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-muted-foreground text-[11px]">
+                          {locationParts && (
+                            <span className="flex items-center gap-1">
+                              <MapPin className="h-3 w-3" />
+                              {locationParts}
+                            </span>
+                          )}
+                          {techParts && <span>{techParts}</span>}
+                        </div>
+                        <div
+                          className="flex items-center gap-1 text-muted-foreground text-[11px] truncate"
+                          title={view.referrer || "Direct"}
+                        >
+                          <Link2 className="h-3 w-3 shrink-0" />
+                          <span className="truncate">
+                            {formatReferrerDomain(view.referrer)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="text-right text-muted-foreground shrink-0"
+                      title={new Date(view.createdAt).toLocaleString("vi-VN")}
+                    >
+                      <div className="text-[11px]">
+                        {formatTimeAgo(view.createdAt)}
+                      </div>
+                      {view.duration != null && (
+                        <div className="text-[10px]">
+                          {formatDuration(view.duration)}
+                        </div>
                       )}
                     </div>
-                    <div className="text-muted-foreground text-[11px]">
-                      {view.browser} • {view.referrer || "Direct"}
-                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            {(() => {
+              const total = data.recentViewsTotal;
+              const pageSize = data.recentViewsPageSize || RECENT_PAGE_SIZE;
+              const totalPages = Math.max(1, Math.ceil(total / pageSize));
+              if (totalPages <= 1) return null;
+              const start = (recentPage - 1) * pageSize + 1;
+              const end = Math.min(recentPage * pageSize, total);
+              return (
+                <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                  <span className="text-[11px] text-muted-foreground">
+                    {start}–{end} / {total}
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setRecentPage((p) => Math.max(1, p - 1))
+                      }
+                      disabled={recentPage === 1 || isLoading}
+                      className="inline-flex items-center justify-center w-7 h-7 rounded-md border bg-background hover:bg-accent disabled:opacity-40 disabled:pointer-events-none transition-colors"
+                      aria-label="Trang trước"
+                    >
+                      <ChevronLeft className="h-3.5 w-3.5" />
+                    </button>
+                    <span className="text-[11px] text-muted-foreground px-1 tabular-nums">
+                      {recentPage} / {totalPages}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setRecentPage((p) => Math.min(totalPages, p + 1))
+                      }
+                      disabled={recentPage === totalPages || isLoading}
+                      className="inline-flex items-center justify-center w-7 h-7 rounded-md border bg-background hover:bg-accent disabled:opacity-40 disabled:pointer-events-none transition-colors"
+                      aria-label="Trang sau"
+                    >
+                      <ChevronRight className="h-3.5 w-3.5" />
+                    </button>
                   </div>
                 </div>
-                <div className="text-right text-muted-foreground">
-                  <div>{formatTimeAgo(view.createdAt)}</div>
-                  {view.duration && (
-                    <div className="text-[10px]">
-                      {formatDuration(view.duration)}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+              );
+            })()}
+          </>
         ) : (
           <p className="text-[12px] text-muted-foreground text-center py-4">
             Chưa có lượt xem nào

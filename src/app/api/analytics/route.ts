@@ -26,6 +26,14 @@ export async function GET(req: NextRequest) {
     // Get query params
     const searchParams = req.nextUrl.searchParams;
     const period = searchParams.get("period") || "7d"; // 7d, 30d, 90d, all
+    const recentPage = Math.max(
+      1,
+      parseInt(searchParams.get("recentPage") || "1", 10) || 1
+    );
+    const recentPageSize = Math.min(
+      50,
+      Math.max(1, parseInt(searchParams.get("recentPageSize") || "10", 10) || 10)
+    );
 
     // Calculate date range
     const now = new Date();
@@ -149,18 +157,24 @@ export async function GET(req: NextRequest) {
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
 
-    // Recent views (last 10)
-    const recentViews = pageViews.slice(0, 10).map((pv) => ({
-      id: pv.id,
-      path: pv.path,
-      country: pv.country,
-      city: pv.city,
-      device: pv.device,
-      browser: pv.browser,
-      referrer: pv.referrer,
-      duration: pv.duration,
-      createdAt: pv.createdAt,
-    }));
+    // Recent views with pagination
+    const recentViewsTotal = pageViews.length;
+    const recentViewsStart = (recentPage - 1) * recentPageSize;
+    const recentViews = pageViews
+      .slice(recentViewsStart, recentViewsStart + recentPageSize)
+      .map((pv) => ({
+        id: pv.id,
+        path: pv.path,
+        country: pv.country,
+        city: pv.city,
+        region: pv.region,
+        device: pv.device,
+        browser: pv.browser,
+        os: pv.os,
+        referrer: pv.referrer,
+        duration: pv.duration,
+        createdAt: pv.createdAt,
+      }));
 
     return NextResponse.json({
       totalViews: portfolio.viewCount,
@@ -173,6 +187,9 @@ export async function GET(req: NextRequest) {
       devices,
       browsers,
       recentViews,
+      recentViewsTotal,
+      recentViewsPage: recentPage,
+      recentViewsPageSize: recentPageSize,
     });
   } catch (error) {
     console.error("Error fetching analytics:", error);
